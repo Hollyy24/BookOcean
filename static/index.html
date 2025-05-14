@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>圖書比價網</title>
+</head>
+
+<body>
+    <nav>
+        <div>
+            <h1 id="nav-title"><img src="./img/black-book-svgrepo-com.svg">
+                Book Price Compare</h1>
+        </div>
+        <h1 id="login">註冊</a></h1>
+        <h1 id="signin">會員登入</a></h1>
+
+    </nav>
+    <main>
+        <h1>查詢書本價格</h1>
+        <form id="search-form">
+            <label>書本名稱</label><br>
+            <input id="search-input" placeholder=" 請輸入書本名稱"><br>
+            <button id="search-button">送出</button>
+        </form>
+        <hr>
+        <h1>結果</h1>
+        <section>
+            <div style="border: 1px solid black;">
+                <h2>誠品</h2>
+                <div id="result-eslite"></div>
+            </div>
+            <div style="border: 1px solid black;">
+                <h2>博客來</h2>
+                <div id="result-books"></div>
+            </div>
+        </section>
+    </main>
+</body>
+<script src="/static/index.js"></script>
+
+</html>
