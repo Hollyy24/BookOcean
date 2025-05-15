@@ -27,7 +27,7 @@ async def getData(book_name:BookName):
         result_1 = search.search_data_from_books_shop(book_name.name)
         result_2 = search.search_data_from_eslite(book_name.name)
         result = result_1 + result_2
-        return JSONResponse(content={"success":True,"books":result_1,"elsite":result_2})    
+        return JSONResponse(content={"success":True,"books":result_1,"eslite":result_2})    
     except Exception as error:
         print(f"Error:{error}")
         return JSONResponse(content={"success":False,"Message":error})    

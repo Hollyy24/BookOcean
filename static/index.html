@@ -11,7 +11,7 @@
 <body>
     <nav>
         <div>
-            <h1 id="nav-title"><img src="./img/black-book-svgrepo-com.svg">
+            <h1 id="nav-title"><img src="../static/img/black-book-svgrepo-com.svg">
                 Book Price Compare</h1>
         </div>
         <h1 id="login">註冊</a></h1>
@@ -19,25 +19,42 @@
 
     </nav>
     <main>
-        <h1>查詢書本價格</h1>
         <form id="search-form">
+            <h1>查詢書本價格</h1>
             <label>書本名稱</label><br>
             <input id="search-input" placeholder=" 請輸入書本名稱"><br>
             <button id="search-button">送出</button>
         </form>
-        <hr>
         <h1>結果</h1>
-        <section>
-            <div style="border: 1px solid black;">
-                <h2>誠品</h2>
-                <div id="result-eslite"></div>
+        <section id="search-container">
+            <div class="book-container">
+                <h1>博客來</h1>
+                <div id="bookshop-container">
+                    <div class="book-item">
+                        <h2 class="book-name"> BOOK NAME</h2>
+                        <img class="book-img" src="../static/img/black-book-svgrepo-com.svg">
+                        <p class="book-authir">作者</p>
+                        <p class="book-price"> 價格</p>
+                    </div>
+                </div>
             </div>
-            <div style="border: 1px solid black;">
-                <h2>博客來</h2>
-                <div id="result-books"></div>
+            <div class="book-container">
+                <h1>誠品</h1>
+                <div id="eslite-container">
+                    <div class="book-item">
+                        <h2 class="book-name"> BOOK NAME</h2>
+                        <img class="book-img" src="../static/img/black-book-svgrepo-com.svg">
+                        <p class="book-author">作者</p>
+                        <p class="book-price"> 價格</p>
+                    </div>
+                </div>
             </div>
+
         </section>
     </main>
+    <footer>
+        <p>2025 © copyright</p>
+    </footer>
 </body>
 <script src="/static/index.js"></script>
 
