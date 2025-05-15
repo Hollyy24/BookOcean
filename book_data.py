@@ -30,51 +30,37 @@ class BookDatabase:
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor()
         try:
-            print(data)
+            print("====")
+
             source = data["來源"]
             name = data["書名"]
             author = data["作者"]
             price = data["價格"]
+            img_url = data["圖片"]
+            book_url = data["連結"]
             time = datetime.datetime.now().strftime("%Y-%m-%d")
-            if source == "誠品線上書店":
-                sql = "INSERT INTO eslite_shop (book_name,book_author,book_price,search_time) VALUES (%s,%s,%s,%s)"
-            else:
-                sql = "INSERT INTO books_shop (book_name,book_author,book_price,search_time) VALUES (%s,%s,%s,%s)"
-            cursor.execute(sql,(name,author,price,time))
+            sql = "INSERT INTO books (source,book_name,book_author,book_price,search_time,book_img_url,book_url) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+            cursor.execute(sql,(source,name,author,price,time,img_url,book_url))
             cnx.commit()
     
         except Exception as error:
-            print(f'error:{error}')
+            print(f'錯誤:{error}')
         finally:
             cnx.close()
     
     
-    def search_data_from_eslite(self,book_name):
+    def search_data_from_books(self,book_name):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            sql = "SELECT book_name,book_author,book_price FROM  eslite_shop  WHERE book_name REGEXP %s"
+            sql = "SELECT id,source,book_name,book_author,book_price,book_img_url,book_url FROM  books WHERE book_name REGEXP %s"
             cursor.execute(sql,(book_name,))
             result = cursor.fetchall()
-            return result
+            return [True,result]
         except Exception as error:
             print(f'error:{error}')
+            return [False,error]
         finally:
             cnx.close()
     
-    def search_data_from_books_shop(self,book_name,):
-        cnx = self.cnxpool.get_connection()
-        cursor = cnx.cursor(dictionary=True)
-        try:
-    
-            sql = "SELECT book_name,book_author,book_price FROM  books_shop  WHERE book_name REGEXP %s"
-            cursor.execute(sql,(book_name,))
-            result = cursor.fetchall()
-            return result
-        except Exception as error:
-            print(f'error:{error}')
-        finally:
-            cnx.close()
             
-
-

@@ -5,48 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
-    <title>圖書比價網</title>
+    <title>Book Snap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Noto+Sans+TC:wght@100..900&family=Playwrite+DK+Loopet:wght@100..400&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
+    <div id="dialog-background"></div>
+    <form id="log-in-form">
+        <h2>註冊帳號</h2>
+        <label><strong>暱稱</strong></label><input id="log-in-name"><br>
+        <label><strong>信箱</strong></label><input id="log-in-email"><br>
+        <label><strong>密碼</strong></label><input id="log-in-password">
+        <button id="log-in-button">註冊</button>
+    </form>
+    <form id="sign-in-form">
+        <h2>登入帳號</h2>
+        <label><strong>信箱</strong></label><input id="sign-in-email"><br>
+        <label><strong>密碼</strong></label><input id="sign-in-password"><br>
+        <button id="sign-in-button">登入</button>
+    </form>
     <nav>
         <div>
-            <h1 id="nav-title"><img src="../static/img/black-book-svgrepo-com.svg">
-                Book Price Compare</h1>
+            <h1 id="nav-title">
+                <img src="../static/img/black-book-svgrepo-com.svg">
+                Book Snap
+            </h1>
         </div>
-        <h1 id="login">註冊</a></h1>
-        <h1 id="signin">會員登入</a></h1>
-
+        <h1 id="nav-right"><a id="login">註冊 /</a><a id="signin">登入</a><a id="member-center">會員中心</a></h1>
     </nav>
     <main>
-        <form id="search-form">
-            <h1>查詢書本價格</h1>
-            <label>書本名稱</label><br>
-            <input id="search-input" placeholder=" 請輸入書本名稱"><br>
-            <button id="search-button">送出</button>
-        </form>
-        <h1>結果</h1>
-        <section id="search-container">
+        <section>
+            <form id="search-form">
+                <h1>查詢書本價格</h1>
+                <input id="search-input" placeholder=" 請輸入書本名稱"><br>
+                <button id="search-button">送出</button>
+            </form>
+        </section>
+        <section id="result-container">
+            <h1>搜尋結果</h1>
+
+            <h2>博客來</h2>
             <div class="book-container">
-                <h1>博客來</h1>
                 <div id="bookshop-container">
-                    <div class="book-item">
-                        <h2 class="book-name"> BOOK NAME</h2>
-                        <img class="book-img" src="../static/img/black-book-svgrepo-com.svg">
-                        <p class="book-authir">作者</p>
-                        <p class="book-price"> 價格</p>
-                    </div>
                 </div>
             </div>
+            <hr>
+            <h2>誠品</h2>
             <div class="book-container">
-                <h1>誠品</h1>
                 <div id="eslite-container">
-                    <div class="book-item">
-                        <h2 class="book-name"> BOOK NAME</h2>
-                        <img class="book-img" src="../static/img/black-book-svgrepo-com.svg">
-                        <p class="book-author">作者</p>
-                        <p class="book-price"> 價格</p>
-                    </div>
+
                 </div>
             </div>
 
