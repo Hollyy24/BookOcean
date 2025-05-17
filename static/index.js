@@ -11,15 +11,11 @@ class Controller {
         this.model = model;
         this.view = view;
 
+        this.init()
 
-        let token = localStorage.getItem('token');
-        if (token) {
-            this.view.memberCenter.style.display = "block"
-            this.view.login.style.display = "none";
-            this.view.signin.style.display = "none";
-
-        }
-
+        this.view.homePage.addEventListener("click", () => {
+            window.location.href = "/"
+        })
         this.view.searchButton.addEventListener("click", async (event) => {
             event.preventDefault()
             const bookName = this.view.searchInput.value
@@ -40,7 +36,16 @@ class Controller {
                     } else if (books[index].source == "books") {
                         this.view.renderResult(books[index], this.view.bookshopContainer)
                     }
+
+                    const collectionButtons = document.querySelectorAll('.collect-button');
+                    collectionButtons.forEach((element) => {
+                        element.onclick = () => {
+                            this.model.addCollection(element.id)
+                        }
+                    })
+
                 }
+
             }
             if (result["success"] == false) {
                 const Message = result["Message"]
@@ -49,6 +54,7 @@ class Controller {
             }
             return
         })
+
 
         this.view.signin.addEventListener("click", () => {
             this.view.dialogBackground.style.display = "block";
@@ -99,6 +105,16 @@ class Controller {
             window.location.href = "/member"
         })
 
+    }
+    init() {
+
+        let token = localStorage.getItem('token');
+        if (token) {
+            this.view.memberCenter.style.display = "block"
+            this.view.login.style.display = "none";
+            this.view.signin.style.display = "none";
+
+        }
     }
 }
 
@@ -169,12 +185,41 @@ class Model {
         }
     }
 
+    async addCollection(book_id) {
+        const data = {
+            "user_id": localStorage.getItem('token'),
+            "book_id": book_id
+        }
+        try {
+            const response = await fetch('api/collectbook', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem('token')
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (result["success"] == true) {
+                alert("收藏成功");
+            }
+            if (result["success"] == false) {
+                alert("收藏失敗");
+            }
+            ;
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    }
 
 }
 
 
+
+
 class View {
     constructor() {
+        this.homePage = document.querySelector('#nav-title');
         this.searchForm = document.querySelector("#searchForm");
         this.searchInput = document.querySelector("#search-input");
         this.searchButton = document.querySelector("#search-button");
@@ -191,19 +236,15 @@ class View {
         this.siginForm = document.querySelector("#sign-in-form");
         this.dialogBackground = document.querySelector('#dialog-background');
 
-
+        this.collectButton = document.querySelector('.collect-button');
 
     }
 
 
-    renderResult(data, container) {
+    renderResult(data, container, addCollection) {
         this.resultContainer.style.display = "flex";
-        this.createContent(data, container)
+        this.createContent(data, container, addCollection)
     }
-
-
-
-
 
     createContent(data, container) {
 
@@ -214,7 +255,7 @@ class View {
         let bookPrice = document.createElement("p");
         let urlContainer = document.createElement("div")
         let bookUrl = document.createElement("a")
-        let collectUrl = document.createElement("a")
+        let collectButton = document.createElement("a")
 
         bookItem.className = "book-item";
         bookName.className = "book-name";
@@ -222,8 +263,10 @@ class View {
         bookAuthor.className = "book-author";
         bookPrice.className = "book-price";
         bookUrl.className = 'book-url';
+        bookUrl.target = "_blank";
         urlContainer.className = "url-container";
-        collectUrl.className = "collect-url";
+        collectButton.className = "collect-button";
+
 
         bookName.textContent = data.book_name;
         bookImg.src = data.book_img_url;
@@ -231,8 +274,8 @@ class View {
         bookPrice.textContent = data.book_price;
         bookUrl.textContent = "前往購買";
         bookUrl.href = data.book_url;
-        collectUrl.textContent = "加入收藏";
-        collectUrl.id = data.book_id;
+        collectButton.textContent = "加入收藏";
+        collectButton.id = data.id;
 
 
 
@@ -242,7 +285,7 @@ class View {
         bookItem.appendChild(bookPrice);
         bookItem.appendChild(urlContainer);
         urlContainer.appendChild(bookUrl);
-        urlContainer.appendChild(collectUrl);
+        urlContainer.appendChild(collectButton);
         container.appendChild(bookItem);
 
     }
@@ -266,6 +309,11 @@ class View {
         this.closeSignin();
         this.closeLogin();
         this.dialogBackground.style.display = "none";
+    }
+
+    setCollectButton() {
+        const collectButton = document.querySelectorAll('.collect-book');
+        return collectButton
     }
 }
 

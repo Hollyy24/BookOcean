@@ -20,11 +20,17 @@ class LoginForm(BaseModel):
 class SigninForm(BaseModel):
     email:str
     password:str
+    
+class CollectBook(BaseModel):
+    user_id: str
+    book_id: str
+
 
 app=FastAPI()
 app.mount("/static",StaticFiles(directory="static"))
 
 member = MemberDatabase()
+book = BookDatabase()
 
 @app.get("/", include_in_schema=False)
 async def index(request: Request):
@@ -67,6 +73,7 @@ async def get_user(user:SigninForm):
     print("signin")
     try:
         result = member.get_memberdata(user)
+        print(result)
         if result == False:
             return JSONResponse(content={"success":False,"Message":"登入失敗"})
         return JSONResponse(content={"success":True,"userdata":result})    
@@ -74,6 +81,24 @@ async def get_user(user:SigninForm):
         print(f"Error:{error}")
         return JSONResponse(content={"success":False,"Message":error})  
 
+
+@app.post("/api/collectbook")
+async def add_collect_book(data:CollectBook):
+    result = book.add_collect_book(data)
+    if result is True:
+        return JSONResponse(content={"success":True})
+    if result is False:
+        return JSONResponse(content={"success":False})
+    
+
+@app.get("/api/collectbook")
+async def get_collect_book(authorization: str = Header(None)):
+    user_id = authorization.replace("Bearer", "")
+    data = book.get_collect_book(user_id)
+    
+    if data :
+        return JSONResponse(content={"success":True,"data":data})
+    return JSONResponse(content={"success":False})
 
 
 if __name__ == "__main__":

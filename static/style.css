@@ -250,7 +250,7 @@ hr {
 }
 
 .book-url,
-.collect-url {
+.collect-button {
     text-decoration: none;
     color: white;
     background-color: #205781;
@@ -261,7 +261,7 @@ hr {
 }
 
 .book-url:hover,
-.collect-url:hover {
+.collect-button:hover {
     text-decoration: none;
     color: white;
     background-color: #205761;
@@ -273,10 +273,24 @@ hr {
     content: " ✔ ";
 }
 
-.collect-url::before {
+.collect-button::before {
     content: " ❤ ";
 }
 
+#personal-collection {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.collect-container {
+    background-color: antiquewhite;
+    border-radius: 5px;
+    width: 200px;
+    display: flex;
+    margin: 10px auto;
+    padding: 10px;
+    flex-direction: column;
+}
 
 footer {
     display: fixed;

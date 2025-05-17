@@ -63,4 +63,35 @@ class BookDatabase:
         finally:
             cnx.close()
     
-            
+    def add_collect_book(self,data):
+        cnx = self.cnxpool.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        try:
+            user_id = data.user_id
+            book_id = data.book_id
+            sql = "INSERT INTO user_collect_book (user_id,book_id) VALUES (%s,%s)"
+            cursor.execute(sql,(user_id,book_id,))
+            cnx.commit()
+            return True
+        except Exception as error:
+            print(f'error:{error}')
+            return False
+        finally:
+            cnx.close()
+    
+    def get_collect_book(self,user_id):
+        cnx = self.cnxpool.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        try:
+            sql = "SELECT id,book_name,book_author,book_price,book_img_url,book_url FROM books WHERE id IN (SELECT book_id FROM user_collect_book WHERE user_id = %s)"
+            cursor.execute(sql,(user_id,))
+            data = cursor.fetchall()
+            if data is None:
+                return False 
+            return data
+        except Exception as error:
+            print(f'error:{error}')
+            return False
+        finally:
+            cnx.close()
+    
