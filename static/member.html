@@ -4,45 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Book Snap</title>
+    <link rel="stylesheet" href="/static/CSS/style.css">
+    <title>BOOK OCEAN</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Noto+Sans+TC:wght@100..900&family=Playwrite+DK+Loopet:wght@100..400&display=swap"
         rel="stylesheet">
+    <!--不請求icon-->
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
 
 <body>
     <nav>
-        <div>
-            <h1 id="nav-title">
-                <img src="../static/img/black-book-svgrepo-com.svg">
-                Book Hunter
-
-            </h1>
-        </div>
-        <h1 id="nav-right"><a id="logout">登出</a></h1>
+        <img src="../static/img/logo.png">
+        <p id="nav-title">BOOKOCEAN</p>
+        <p id="nav-right">
+            <a id="logout"> 登出 </a>
+        </p>
     </nav>
-    <main>
-        HERE is Member Page
-        <section id="profile">
-
+    <hr id="nav-line">
+    <main id="member-layout">
+        <section id="profile-container">
+            <div id="profile-img"></div>
+            <p id="pro-file-name">暱稱</p>
+            <p id="profile-email">會員信箱</p>
+            <button id="edit-button"><strong>修改資料</strong></button>
         </section>
-        <section id="personal-collection">
-            <div class="collect-container">
-                <p class="collect-name">Book Name</p>
-                <img class="collect-img">
-                <p class="collect-author">Book Author</p>
-                <p class="collect-price">Book Price</p>
-                <a class="collect-url">Book URL</a>
-            </div>
+        <section id="collect-container">
+            <h2>收藏資料</h2>
+            <table class="collect-table">
+                <thead>
+                    <tr>
+                        <th>選取</th>
+                        <th>名稱</th>
+                        <th>作者</th>
+                        <th>價格</th>
+                        <th>網址</th>
+                        <th>收藏日</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="collect-check">
+                            <input type="checkbox" name="collect-check">
+                        </td>
+                        <td class="collect-name"><span>書名</span></td>
+                        <td class="collect-author">作者名稱</td>
+                        <td class="collect-price">NT$299</td>
+                        <td class="collect-url"><a href="#">前往購買</a></td>
+                        <td class="collect-time">2025-05-20</td>
+                        <td class="collect-delete"><span>刪除</span></td>
+
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </main>
     <footer>
         <p>2025 © copyright</p>
     </footer>
 </body>
-<script src="/static/member.js"></script>
+<script src="/static/JS/member.js"></script>
+<script src="/static/JS/base.js"></script>
+
 
 </html>

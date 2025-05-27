@@ -1,0 +1,162 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: "Noto Sans TC", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+nav {
+    position: relative;
+    display: flex;
+    text-align: center;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 1200px;
+    height: 30px;
+}
+
+#nav-line {
+    margin: 0px;
+    color: #d1dbe0;
+}
+
+#nav-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #1D3C50;
+}
+
+nav img {
+    height: 30px;
+    width: 30px;
+    margin: auto 10px;
+    align-items: center;
+}
+
+#nav-right {
+    position: absolute;
+    color: #1D3C50;
+    right: 10px;
+    font-weight: 200;
+    font-style: normal;
+    font-size: 16px;
+    align-self: center;
+}
+
+
+#login,
+#signin,
+#logout {
+    cursor: pointer;
+}
+
+#member-center {
+    display: none;
+    cursor: pointer;
+
+}
+
+#login::before,
+#signin::before,
+#logout::before {
+    content: "   ";
+    cursor: pointer;
+}
+
+
+#login:hover,
+#signin:hover,
+#member-center:hover,
+#logout:hover {
+    color: #000;
+    cursor: pointer;
+}
+
+
+
+#dialog-background {
+    position: fixed;
+    display: none;
+    background-color: #333333;
+    opacity: 0.5;
+    z-index: 10;
+    width: 110vw;
+    height: 110vh;
+}
+
+
+#log-in-form,
+#sign-in-form {
+    display: none;
+    color: #205781;
+    border: 1px solid #205781;
+    background-color: white;
+    width: 300px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    box-shadow: #333333 2px 2px 10px;
+    justify-content: center;
+    text-align: center;
+    z-index: 100;
+
+
+}
+
+
+#sign-in-form h2,
+#log-in-form h2 {
+    background-color: #205781;
+    padding: 10px;
+    color: white;
+    margin-top: 0px;
+    text-align: center;
+}
+
+#sign-in-form label,
+#log-in-form label {
+    color: #1D3C50;
+}
+
+#sign-in-form input,
+#log-in-form input {
+    width: 200px;
+    height: 30px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#sign-in-button,
+#log-in-button {
+    width: 100px;
+    padding: 5px;
+    margin: 10px;
+    background-color: #205781;
+    border: none;
+    color: #ddd;
+    cursor: pointer;
+}
+
+
+#sign-in-button:hover,
+#log-in-button:hover {
+    background-color: #37647d;
+    cursor: pointer;
+}
+
+footer {
+    display: fixed;
+    bottom: 0px;
+    height: 30px;
+    width: 100vw;
+    background-color: #37647d;
+    color: white;
+    text-align: center;
+}
+
+hr {
+    margin: 0px;
+}

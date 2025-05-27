@@ -1,0 +1,148 @@
+#book-result {
+    position: relative;
+    margin: 20px auto;
+    background-color: #c3cac3D2;
+    padding: 20px;
+}
+
+
+#search-img {
+    position: absolute;
+    width: 350px;
+    top: 0px;
+    left: -50px;
+    z-index: 5;
+}
+
+#book-text {
+    position: relative;
+    width: 80%;
+    font-size: 20px;
+    margin: 40px auto;
+    text-align: center;
+    color: #37647d;
+}
+
+
+#result-container {
+    border-radius: 10px;
+    padding: 20px 20px;
+    margin-left: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+
+
+.book-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin: 10px;
+    width: 200px;
+    background-color: white;
+    border-radius: 0px 5px 5px 0px;
+    box-shadow: 3px 5px 3px gray;
+    border: 1px solid #ddd;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+
+
+.book-item:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.book-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px darkblue sold;
+
+}
+
+
+.book-source {
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    background-color: #205761;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    margin: 0;
+}
+
+
+.book-img {
+    object-fit: contain;
+    width: 100px;
+    height: 100px;
+    margin: 5px auto;
+
+}
+
+
+.book-price {
+    color: red;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0px;
+
+}
+
+.book-author {
+    color: #37647d;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.url-container {
+    margin: 1px auto;
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(2 1fr);
+    gap: 5px;
+}
+
+.book-url,
+.collect-button {
+    text-decoration: none;
+    color: white;
+    background-color: #37647d;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.book-url:hover,
+.collect-button:hover {
+    text-decoration: none;
+    color: white;
+    background-color: #205761;
+    border-radius: 5px;
+    cursor: pointer
+}
+
+.book-url::before {
+    content: " ✔ ";
+}
+
+.collect-button::before {
+    content: " ❤ ";
+}

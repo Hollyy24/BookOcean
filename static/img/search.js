@@ -220,13 +220,7 @@ class Model {
 class View {
     constructor() {
         this.homePage = document.querySelector('#nav-title');
-        this.searchForm = document.querySelector("#searchForm");
-        this.searchInput = document.querySelector("#search-input");
-        this.searchButton = document.querySelector("#search-button");
-        this.bookContainer = document.querySelector(".book-container");
-        this.bookshopContainer = document.querySelector("#bookshop-container");
-        this.esliteContainer = document.querySelector("#eslite-container");
-        this.resultContainer = document.querySelector("#result-container");
+
 
         this.login = document.querySelector('#login');
         this.signin = document.querySelector('#signin');
