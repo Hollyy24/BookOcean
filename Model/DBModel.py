@@ -16,7 +16,7 @@ class DatabaseSystem:
             "password": os.getenv("MYSQL_PASSWORD"),
             "database": "BooksPrice"
         }
-
+        print(dbconfig["host"])
 
         self.cnxpool = pooling.MySQLConnectionPool(
             pool_name="mypool",
