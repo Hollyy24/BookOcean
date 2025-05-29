@@ -78,13 +78,14 @@ nav img {
 
 
 #dialog-background {
-    position: fixed;
+    position: absolute;
+    top: -50px;
     display: none;
     background-color: #333333;
     opacity: 0.5;
     z-index: 10;
-    width: 110vw;
-    height: 110vh;
+    width: 300%;
+    height: 300%;
 }
 
 
@@ -132,7 +133,7 @@ nav img {
 #sign-in-button,
 #log-in-button {
     width: 100px;
-    padding: 5px;
+    padding: 10px;
     margin: 10px;
     background-color: #205781;
     border: none;
@@ -144,6 +145,20 @@ nav img {
 #sign-in-button:hover,
 #log-in-button:hover {
     background-color: #37647d;
+    cursor: pointer;
+}
+
+
+#change-login,
+#change-signin {
+    color: #37647d;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#change-login:hover,
+#change-signin:hover {
+    opacity: 0.8;
     cursor: pointer;
 }
 

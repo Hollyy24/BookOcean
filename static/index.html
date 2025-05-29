@@ -24,12 +24,15 @@
         <label><strong>信箱</strong></label><input id="log-in-email"><br>
         <label><strong>密碼</strong></label><input id="log-in-password">
         <button id="log-in-button">註冊</button>
+        <p id="change-signin">點此登入</p>
     </form>
     <form id="sign-in-form">
         <h2>登入帳號</h2>
         <label><strong>信箱</strong></label><input id="sign-in-email"><br>
         <label><strong>密碼</strong></label><input id="sign-in-password"><br>
         <button id="sign-in-button">登入</button>
+        <p id="change-login">點此註冊</p>
+
     </form>
     <nav>
         <img src="../static/img/logo.png">
@@ -40,16 +43,16 @@
     </nav>
     <hr id="nav-line">
     <section id="hero-container">
-        <form id="search-container">
+        <form class="search-container">
             <h1>探索書海<br>找到最值得的選擇</h1>
             <p>Not all treasure is silver and gold.</p>
             <div class="search-bar">
-                <select id="search-category">
+                <select class="search-category">
                     <option value="name">書名</option>
                     <option value="author">作者</option>
                 </select>
-                <input id="search-input" type="text" placeholder="請輸入關鍵字">
-                <button id="search-button">GO</button>
+                <input class="search-input" type="text" placeholder="請輸入關鍵字">
+                <button class="search-button">GO</button>
             </div>
         </form>
     </section>

@@ -1,5 +1,5 @@
 
-import requests,time
+import requests,time,json
 from bs4 import BeautifulSoup
 from DBModel import DatabaseSystem
 from  selenium import webdriver
@@ -177,34 +177,34 @@ class EsliteCraw:
             print(e)
     
 
-db = DatabaseSystem()
-app = EsliteCraw()
-app2 = EsliteAPI()
+# db = DatabaseSystem()
+# app = EsliteCraw()
+# app2 = EsliteAPI()
 
 
 # books = app2.get_best_seller()
 # for book in books:
 #     db.insert_data(book)
 
-data = db.get_all_books()
+# data = db.get_all_books()
 
-sample_list = []
-for book in data:
-    if book['source'] == "誠品" :
-        sample_list.append(book["id"])
+# sample_list = []
+# for book in data:
+#     if book['source'] == "誠品" :
+#         sample_list.append(book["id"])
 
 
-for book in data:
-    if book['source'] == '博客來':
-        result = app.search_data(book['name'][:5])
-        print(result)
-        for id in result:
-            print(id)
-            if id in sample_list:
-                print(1)
-                continue
-            else:
-                print(2)
-                inseret_data  = app2.get_book_data(id)
-                db.insert_data(inseret_data)
+# for book in data:
+#     if book['source'] == '博客來':
+#         result = app.search_data(book['name'][:5])
+#         print(result)
+#         for id in result:
+#             print(id)
+#             if id in sample_list:
+#                 print(1)
+#                 continue
+#             else:
+#                 print(2)
+#                 inseret_data  = app2.get_book_data(id)
+#                 db.insert_data(inseret_data)
                 

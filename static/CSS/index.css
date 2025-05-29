@@ -12,7 +12,7 @@
 
 
 
-#search-container {
+.search-container {
     width: 90%;
     max-width: 1200px;
     font-size: 20px;
@@ -28,7 +28,7 @@
 }
 
 
-#search-category {
+.search-category {
     appearance: none;
     display: inline-block;
     height: 42px;
@@ -50,7 +50,7 @@
 }
 
 
-#search-input {
+.search-input {
     display: inline;
     height: 30px;
     width: 300px;
@@ -61,7 +61,7 @@
     border: 1px solid #37647d;
 }
 
-#search-button {
+.search-button {
     display: inline-block;
     transform: translate(-100%, 0);
     height: 40px;
@@ -141,7 +141,7 @@
 .random-img {
     width: 100px;
     height: 100px;
-    object-fit: contain;
+    object-fit: cover;
     margin: 5px auto;
 
 }

@@ -36,6 +36,18 @@ class BaseController {
 
         })
 
+        this.view.changeLogin.addEventListener("click", () => {
+            this.view.dialogBackground.style.display = "block";
+            this.view.closeSignin()
+            this.view.showLogin()
+        })
+
+        this.view.changeSignin.addEventListener("click", () => {
+            this.view.dialogBackground.style.display = "block";
+            this.view.closeLogin()
+            this.view.showSignin()
+        })
+
         this.view.loginForm.addEventListener("submit", (event) => {
             event.preventDefault()
             let name = document.querySelector('#log-in-name').value
@@ -68,25 +80,41 @@ class BaseController {
         })
 
     }
-    init() {
+    async init() {
+        const result = await this.model.checkStatus()
+        if (result == false) { return }
+        this.view.memberCenter.style.display = "block"
+        this.view.login.style.display = "none";
+        this.view.signin.style.display = "none";
 
-        let token = localStorage.getItem('token');
-        if (token) {
-            this.view.memberCenter.style.display = "block"
-            this.view.login.style.display = "none";
-            this.view.signin.style.display = "none";
-
-        }
     }
 }
 
 class BaseModel {
-
+    async checkStatus() {
+        const token = localStorage.getItem('token')
+        if (!token) { return false }
+        try {
+            const response = await fetch('/api/user', {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+            })
+            const result = await response.json();
+            if (result["success"] == false) { return false };
+            const member = result["memberdata"];
+            return member
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    }
 
     async userSignin(userData) {
         try {
-            const response = await fetch('/api/signinuser', {
-                method: "POST",
+            const response = await fetch('/api/user', {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -94,9 +122,8 @@ class BaseModel {
             });
             const result = await response.json();
             if (result["success"] == true) {
-                let user = result["userdata"]
-                let id = user.id
-                localStorage.setItem("token", id)
+                const token = result["memberdata"]
+                localStorage.setItem("token", token)
                 alert("登入成功")
                 window.location.reload();
             }
@@ -112,7 +139,7 @@ class BaseModel {
 
     async userLogin(userData) {
         try {
-            const response = await fetch('/api/loginuser', {
+            const response = await fetch('/api/user', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -148,6 +175,10 @@ class BaseView {
         this.loginForm = document.querySelector("#log-in-form");
         this.siginForm = document.querySelector("#sign-in-form");
         this.dialogBackground = document.querySelector('#dialog-background');
+
+        this.changeSignin = document.querySelector("#change-signin");
+        this.changeLogin = document.querySelector("#change-login");
+
     }
     showLogin() {
         this.loginForm.style.display = "block";

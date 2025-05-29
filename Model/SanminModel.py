@@ -8,6 +8,93 @@ from DBModel import DatabaseSystem
 
 
 
+class SanminRequest:
+
+    def __init__(self):
+        category = {
+            "hi":[ f"{i:02d}" for i  in range(1,9)],
+            "de":[ f"{i:02d}" for i  in range(1,4)],
+            "fg":[ f"{i:02d}" for i  in range(1,3)],
+            "jk":[ f"{i:02d}" for i  in range(1,10)],
+            "lm":[ f"{i:02d}" for i  in range(1,13)],
+            "op":[ f"{i:02d}" for i  in range(1,9)],
+            "qr":[ f"{i:02d}" for i  in range(1,3)],
+            "st":[ f"{i:02d}" for i  in range(1,3)],
+            "xy":[ f"{i:02d}" for i  in range(1,14)],
+        }
+        self.category_id = [] 
+        for key,value in category.items():
+            for number in value:
+                id = f"{key}{number}"
+                self.category_id.append(id)
+
+    def get_rank_data(self):
+        result = []
+        for id in self.category_id: 
+            for number in range(1,10):
+                try:
+                    time.sleep(1)
+                    WEB_URL= f'https://www.sanmin.com.tw/promote/library/?id={id}0&pi={number}&groqty=true'
+                    print(WEB_URL)
+                    response = requests.get(WEB_URL)
+                    soup = BeautifulSoup(response.text,'html.parser')
+                    books = soup.find_all('div',class_='sProduct')
+                    for book  in books:
+                        book_name = book.find('div',class_='Title').find('h3').get_text()
+                        book_url = book.find('div',class_='Title').find('a')['href']
+                        book_id = book_url.replace("/product/index/","")
+                        book_author = book.find('div',class_='Author').find_all('a')[0].get_text()
+                        book_price = book.find('span',class_='Price').get_text()
+                        book_img = book.find('img')['data-src']
+                        book_data  = {
+                                "來源":"sanmin",
+                                "書名": book_name,
+                                "id":book_id,
+                                "作者":book_author,
+                                "網址": f"https://www.sanmin.com.tw{book_url}",
+                                "圖片":book_img,
+                                "價格":book_price,
+                            }
+                        print(book_data)
+                        result.append(book_data)
+                except Exception as e :
+                    print("error:",e)
+                    continue    
+        return result
+            
+    def get_childbook_data(self):
+        result = []
+        for number in range(1,10):
+            for page in range(1,9):
+                try:
+                    print(id)
+                    WEB_URL = f'https://www.sanmin.com.tw/promote/child/?id=ab{number}&pi={page}&groqty=true'
+                    response = requests.get(WEB_URL)
+                    soup = BeautifulSoup(response.text,'html.parser')
+                    books = soup.find_all('div',class_='sProduct')
+                    for book  in books:
+                        book_name = book.find('div',class_='Title').find('h3').get_text()
+                        book_url = book.find('div',class_='Title').find('a')['href']
+                        book_id = book_url.replace("/product/index/","")
+                        book_author = book.find('div',class_='Author').find_all('a')[0].get_text()
+                        book_price = book.find('span',class_='Price').get_text()
+                        book_img = book.find('img')['data-src']
+                        book_data  = {
+                                "來源":"sanmin",
+                                "書名": book_name,
+                                "id":book_id,
+                                "作者":book_author,
+                                "網址": f"https://www.sanmin.com.tw{book_url}",
+                                "圖片":book_img,
+                                "價格":book_price,
+                            }
+                        print(book_data)
+                        result.append(book_data)
+                except Exception as e :
+                    print(e)
+                    continue    
+        return result
+            
 class SanminCraw:
     
     def __init__(self):
@@ -99,4 +186,21 @@ class SanminCraw:
             print(f'錯誤：{e}')
         finally:
             self.driver.close()
+
+
+
+app = SanminRequest()
+db =DatabaseSystem()
+books = app.get_rank_data()
+
+
+for book in books:
+    print(book)
+    db.insert_data(book)
+
+books = []
+books = app.get_childbook_data()
+for book in books:
+    print(book)
+    db.insert_data(book)
 

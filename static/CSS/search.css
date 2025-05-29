@@ -25,9 +25,8 @@
 
 
 #result-container {
-    border-radius: 10px;
     padding: 20px 20px;
-    margin-left: 100px;
+    margin: 0px auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -145,4 +144,15 @@
 
 .collect-button::before {
     content: " ❤ ";
+}
+
+
+.search-section {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    align-items: center;
+    height: 40px;
+    justify-content: center;
+    margin: 0 auto;
 }

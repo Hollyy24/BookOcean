@@ -11,11 +11,22 @@ class Controller {
         this.model = model;
         this.view = view;
         this.init()
-        this.initData()
+        this.view.searchButton.addEventListener("click", async (event) => {
+            event.preventDefault()
+            const searchWay = this.view.searchWay.value
+            const searchValue = this.view.searchInput.value.trim()
+            console.log(searchValue, searchWay)
+            if (searchValue) {
+                window.location.href = `/search/?way=${searchWay}&value=${searchValue}`;
+            } else {
+                alert("請輸入關鍵字");
+            }
+        })
 
     }
 
-    async initData() {
+
+    async init() {
         const data = this.model.getQueryparameter();
         const result = await this.model.fetchData(data);
         if (result == false) {
@@ -30,17 +41,12 @@ class Controller {
         for (let index in books) {
             this.view.createContent(books[index]);
         }
-
-    }
-    init() {
-
-        let token = localStorage.getItem('token');
-        if (token) {
-            this.view.memberCenter.style.display = "block"
-            this.view.login.style.display = "none";
-            this.view.signin.style.display = "none";
-
-        }
+        document.querySelectorAll(".collect-button").forEach(button => {
+            button.addEventListener("click", () => {
+                const book = button.id;
+                this.model.addCollection(book);
+            });
+        })
     }
 }
 
@@ -75,17 +81,23 @@ class Model {
     }
 
 
-    async addCollection(book_id) {
+    async addCollection(book) {
+        const token = localStorage.getItem('token')
+        if (!token) {
+            alert("請先登入")
+            return
+        }
         const data = {
-            "user_id": localStorage.getItem('token'),
-            "book_id": book_id
+            "token": token,
+            "book_source": book.split("/")[0],
+            "book_id": book.split("/")[1]
         }
         try {
-            const response = await fetch('api/collectbook', {
+            const response = await fetch('/api/collect', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem('token')
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(data)
             });
@@ -110,7 +122,11 @@ class Model {
 class View {
     constructor() {
         this.bookText = document.querySelector("#book-text");
-
+        this.collectButton = document.querySelectorAll(".collect-button");
+        this.searchForm = document.querySelector(".searchForm");
+        this.searchWay = document.querySelector('.search-category')
+        this.searchInput = document.querySelector(".search-input");
+        this.searchButton = document.querySelector(".search-button");
 
     }
 
@@ -121,6 +137,9 @@ class View {
         }
         if (source == "誠品") {
             return "#A50034"
+        }
+        if (source == "三民") {
+            return "#FFD400"
         }
     }
 
@@ -158,7 +177,7 @@ class View {
         bookUrl.textContent = "前往購買";
         bookUrl.href = data.url;
         collectButton.textContent = "加入收藏";
-        collectButton.id = data.id;
+        collectButton.id = `${data.source}/${data.id}`;
 
 
 

@@ -6,7 +6,7 @@ import uvicorn
 
 from router.member import member_router
 from router.book import book_router
-
+from router.collect import collect_router
 
 
     
@@ -14,9 +14,10 @@ from router.book import book_router
 
 app=FastAPI()
 app.mount("/static",StaticFiles(directory="static"))
-
 app.include_router(member_router)
 app.include_router(book_router)
+app.include_router(collect_router)
+
 
 
 

@@ -62,7 +62,7 @@ class DatabaseSystem:
                 UNION
                 SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite 
                 UNION
-                SELECT id,name,author,price,img,url,'三民書局' AS source FROM sanmin 
+                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin 
                 """
             cursor.execute(sql,)
             result = cursor.fetchall()
@@ -82,7 +82,7 @@ class DatabaseSystem:
                 UNION
                 SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite WHERE name LIKE %s
                 UNION
-                SELECT id,name,author,price,img,url,'三民書局' AS source FROM sanmin WHERE name LIKE %s
+                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin WHERE name LIKE %s
                 """
             name  = f'%{name}%'
             cursor.execute(sql,(name,name,name,))
@@ -102,7 +102,7 @@ class DatabaseSystem:
                 UNION
                 SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite WHERE author LIKE %s
                 UNION
-                SELECT id,name,author,price,img,url,'三民書局' AS source FROM sanmin WHERE author LIKE %s
+                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin WHERE author LIKE %s
                 """
             author  = f'%{author}%'
             cursor.execute(sql,(author,author,author,))
@@ -114,14 +114,22 @@ class DatabaseSystem:
             cnx.close()
             
     
-    def add_collect_book(self,data):
+    
+    def add_collect_book(self,user_id,data):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            user_id = data.user_id
+            time = datetime.datetime.now().strftime("%Y-%m-%d")
+            member_id = user_id
             book_id = data.book_id
-            sql = "INSERT INTO user_collect_book (user_id,book_id) VALUES (%s,%s)"
-            cursor.execute(sql,(user_id,book_id,))
+            if data.book_source == "誠品":
+                book_source = "eslite"
+            elif data.book_source == "博客來":
+                book_source = 'books'
+            if data.book_source == "三民":
+                book_source = 'sanmin'
+            sql = "INSERT INTO collection (member_id,book_id,book_source,time) VALUES (%s,%s,%s,%s)"
+            cursor.execute(sql,(member_id,book_id,book_source,time,))
             cnx.commit()
             return True
         except Exception as error:
@@ -131,12 +139,25 @@ class DatabaseSystem:
             cnx.close()
     
     
-    def get_collect_book(self,user_id):
+    def get_collect_book(self,member_id):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            sql = "SELECT id,book_name,book_author,book_price,book_img_url,book_url FROM books WHERE id IN (SELECT book_id FROM user_collect_book WHERE user_id = %s)"
-            cursor.execute(sql,(user_id,))
+            sql = """
+            SELECT
+            collection.*,
+            allbooks.name,
+            allbooks.author,
+            allbooks.img,
+            allbooks.price,
+            allbooks.url
+            FROM collection
+            LEFT JOIN allbooks
+            ON collection.book_id = allbooks.id
+            AND collection.book_source = allbooks.source
+            WHERE collection.member_id = %s;
+            """
+            cursor.execute(sql,(member_id,))
             data = cursor.fetchall()
             if data is None:
                 return False 
@@ -148,12 +169,14 @@ class DatabaseSystem:
             cnx.close()
     
     
-    def delete_collect_book(self,user_id):
+    def delete_collect_book(self,member_id,data):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            sql = "delete user_collect_book (user_id,book_id) VALUES (%s,%s)"
-            cursor.execute(sql,(user_id,))
+            book_id = data.book_id
+            book_source = data.book_source
+            sql = "DELETE FROM collection WHERE member_id=%s AND book_id = %s AND book_source = %s"
+            cursor.execute(sql,(member_id,book_id,book_source,))
             cnx.commit()
             return True
         except Exception as error:

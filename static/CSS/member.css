@@ -64,6 +64,7 @@
     padding: 12px 16px;
     border: 1px solid #ccc;
     text-align: left;
+    font-size: 14px;
 }
 
 .collect-table tbody tr:hover {
@@ -72,7 +73,6 @@
 
 .collect-check input[type="checkbox"] {
     appearance: none;
-    -webkit-appearance: none;
     width: 15px;
     height: 15px;
     border: 1px solid #205781;
@@ -91,4 +91,14 @@
 
 .collect-check input[type="checkbox"]:checked {
     background-color: #205781;
+}
+
+.collect-delete {
+    color: red;
+    cursor: pointer;
+}
+
+.collect-delete:hover {
+    opacity: 0.5;
+    cursor: pointer
 }

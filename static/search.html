@@ -24,12 +24,15 @@
         <label><strong>信箱</strong></label><input id="log-in-email"><br>
         <label><strong>密碼</strong></label><input id="log-in-password">
         <button id="log-in-button">註冊</button>
+        <p id="change-signin">點此登入</p>
     </form>
     <form id="sign-in-form">
         <h2>登入帳號</h2>
         <label><strong>信箱</strong></label><input id="sign-in-email"><br>
         <label><strong>密碼</strong></label><input id="sign-in-password"><br>
         <button id="sign-in-button">登入</button>
+        <p id="change-login">點此註冊</p>
+
     </form>
     <nav>
         <img src="../static/img/logo.png">
@@ -40,10 +43,23 @@
     </nav>
     <hr id="nav-title">
     <main>
+
         <section id="book-result">
             <div id="book-text">
                 <h1>為你尋書</h1>
                 <p>最符合您的搜尋 </p>
+            </div>
+            <div class="search-section">
+                <form id="search-container">
+                    <div class="search-bar">
+                        <select class="search-category">
+                            <option value="name">書名</option>
+                            <option value="author">作者</option>
+                        </select>
+                        <input class="search-input" type="text" placeholder="請輸入關鍵字">
+                        <button class="search-button">GO</button>
+                    </div>
+                </form>
             </div>
             <div id="result-container">
 

@@ -11,7 +11,7 @@ class Controller {
         this.model = model;
         this.view = view;
 
-        this.dataInit()
+
         this.init()
 
         this.view.searchButton.addEventListener("click", async (event) => {
@@ -36,28 +36,17 @@ class Controller {
         })
 
     }
-    async dataInit() {
+    async init() {
         const books = await this.model.fetchRandomBook();
         if (!books) {
             return
         }
         for (let index in books) {
-            console.log(books[index])
             this.view.createContent(books[index]);
         }
     }
 
 
-    init() {
-
-        let token = localStorage.getItem('token');
-        if (token) {
-            this.view.memberCenter.style.display = "block"
-            this.view.login.style.display = "none";
-            this.view.signin.style.display = "none";
-
-        }
-    }
 }
 
 class Model {
@@ -84,10 +73,10 @@ class Model {
 
 class View {
     constructor() {
-        this.searchForm = document.querySelector("#searchForm");
-        this.searchWay = document.querySelector('#search-category')
-        this.searchInput = document.querySelector("#search-input");
-        this.searchButton = document.querySelector("#search-button");
+        this.searchForm = document.querySelector(".searchForm");
+        this.searchWay = document.querySelector('.search-category')
+        this.searchInput = document.querySelector(".search-input");
+        this.searchButton = document.querySelector(".search-button");
         this.leftButton = document.querySelector('#left-button');
         this.rightButton = document.querySelector('#right-button');
 
@@ -138,7 +127,11 @@ class View {
         if (source == "誠品") {
             return "#A50034"
         }
+        if (source == "三民") {
+            return "#FFD400"
+        }
     }
+
 
     moveRandom(path) {
         const container = document.getElementById("random-container");

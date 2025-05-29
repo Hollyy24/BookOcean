@@ -27,16 +27,18 @@
     <main id="member-layout">
         <section id="profile-container">
             <div id="profile-img"></div>
-            <p id="pro-file-name">暱稱</p>
-            <p id="profile-email">會員信箱</p>
-            <button id="edit-button"><strong>修改資料</strong></button>
+            <p>暱稱</p>
+            <p id="profile-name"></p>
+            <p>會員信箱</p>
+            <p id="profile-email"></p>
+            <!-- <button id="edit-button"><strong>修改資料</strong></button> -->
         </section>
         <section id="collect-container">
             <h2>收藏資料</h2>
             <table class="collect-table">
                 <thead>
                     <tr>
-                        <th>選取</th>
+                        <!-- <th>選取</th> -->
                         <th>名稱</th>
                         <th>作者</th>
                         <th>價格</th>
@@ -46,18 +48,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="collect-check">
-                            <input type="checkbox" name="collect-check">
-                        </td>
-                        <td class="collect-name"><span>書名</span></td>
-                        <td class="collect-author">作者名稱</td>
-                        <td class="collect-price">NT$299</td>
-                        <td class="collect-url"><a href="#">前往購買</a></td>
-                        <td class="collect-time">2025-05-20</td>
-                        <td class="collect-delete"><span>刪除</span></td>
-
-                    </tr>
                 </tbody>
             </table>
         </section>
@@ -67,7 +57,6 @@
     </footer>
 </body>
 <script src="/static/JS/member.js"></script>
-<script src="/static/JS/base.js"></script>
 
 
 </html>
