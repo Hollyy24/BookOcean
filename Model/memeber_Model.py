@@ -15,7 +15,7 @@ class MemberDatabase:
     def __init__(self):
 
         dbconfig = {
-                    "host":"localhost",
+                    "host": os.getenv("MYSQL_HOST"),
                     "user": os.getenv("MYSQL_USER"),
                     "password": os.getenv("MYSQL_PASSWORD"),
                     "database": "BooksPrice"
