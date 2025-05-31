@@ -23,7 +23,7 @@ class CollectBook(BaseModel):
 class BookValue(BaseModel):
     way :str
     value:str
-
+    page : int
 
 
 @book_router.get("/api/booksdata")
@@ -38,9 +38,6 @@ async def getbook():
         return result
     except Exception as e:
         print(e)
-    
-
-
 
 
 
@@ -49,9 +46,9 @@ async def getData(book:BookValue):
     search =   DatabaseSystem()
     try:
         if book.way == "name":
-            result = search.get_data_by_name(book.value)
+            result = search.get_data_by_name(book.value,book.page)
         elif book.way == "author":
-            result = search.get_data_by_author(book.value)
+            result = search.get_data_by_author(book.value,book.page)
         if result is  False:
             return JSONResponse(content={"success":False,"Message":"資料讀取錯誤"})    
         return JSONResponse(content={"success":True,"books":result})    

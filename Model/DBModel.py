@@ -58,11 +58,11 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql ="""
-                SELECT id,name,author,price,img,url,'博客來' AS source FROM books 
+                SELECT id,name,author,price,img,url,'博客來' AS source FROM books  
                 UNION
-                SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite 
+                SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite  
                 UNION
-                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin 
+                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin  
                 """
             cursor.execute(sql,)
             result = cursor.fetchall()
@@ -73,20 +73,21 @@ class DatabaseSystem:
             cnx.close()
     
     
-    def get_data_by_name(self,name):
+    def get_data_by_name(self,name,page):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
             sql ="""
-                SELECT id,name,author,price,img,url,'博客來' AS source FROM books WHERE name LIKE %s
-                UNION
-                SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite WHERE name LIKE %s
-                UNION
-                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin WHERE name LIKE %s
-                """
+            (SELECT id,name,author,price,img,url,'博客來' AS source FROM books WHERE name LIKE %s  LIMIT 4 OFFSET %s)
+            UNION ALL
+            (SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite WHERE name LIKE %s  LIMIT 4 OFFSET %s)
+            UNION ALL
+            (SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin WHERE name LIKE %s  LIMIT 4 OFFSET %s)
+            """
             name  = f'%{name}%'
-            cursor.execute(sql,(name,name,name,))
+            cursor.execute(sql,(name,page,name,page,name,page,))
             result = cursor.fetchall()
+            print("resutl:",result)
             return result
         except Exception as error:
             print(f'error:{error}')

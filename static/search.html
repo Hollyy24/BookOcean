@@ -50,18 +50,21 @@
                 <p>最符合您的搜尋 </p>
             </div>
             <div class="search-section">
-                <form id="search-container">
-                    <div class="search-bar">
+                <form class="search-container">
+                    <div class="search-bar" id="search-1">
                         <select class="search-category">
                             <option value="name">書名</option>
                             <option value="author">作者</option>
                         </select>
-                        <input class="search-input" type="text" placeholder="請輸入關鍵字">
-                        <button class="search-button">GO</button>
+                        <input class="search-input" id="search-input-2" type="text" placeholder="請輸入關鍵字">
+                        <button class="search-button" id="search-button-2">GO</button>
                     </div>
                 </form>
             </div>
             <div id="result-container">
+                <div class="left-button" id="search-left"></div>
+                <div class="book-container"></div>
+                <div class="right-button" id="search-right"></div>
 
             </div>
 

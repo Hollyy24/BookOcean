@@ -77,8 +77,8 @@ class View {
         this.searchWay = document.querySelector('.search-category')
         this.searchInput = document.querySelector(".search-input");
         this.searchButton = document.querySelector(".search-button");
-        this.leftButton = document.querySelector('#left-button');
-        this.rightButton = document.querySelector('#right-button');
+        this.leftButton = document.querySelector('.left-button');
+        this.rightButton = document.querySelector('.right-button');
 
     }
 

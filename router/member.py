@@ -27,7 +27,6 @@ class SigninForm(BaseModel):
 async def login(user:LoginForm):
     try:
         no_account = member.check_memberdata(user)
-        print(no_account)
         if no_account is False:
             return JSONResponse(content={"success":False,"Message":"信箱已註冊，請使用其他信箱。"})  
         result = member.create_memberdata(user)
@@ -43,7 +42,6 @@ async def login(user:LoginForm):
 async def signin(user:SigninForm):
     try:
         member_data = member.get_memberdata(user)
-        print("member_data",member_data)
         if member_data == False:
             return JSONResponse(content={"success":False,"Message":"登入失敗"})
         token = member.create_JWT(member_data)
@@ -59,7 +57,6 @@ async def check_status(authorization: str = Header(None)):
         return JSONResponse(content={"success": False, "message": "Missing token"})
     token = authorization.split('Bearer')[1].strip()
     member_data = member.check_user_status(token)
-    print("member_data:",member_data)
     if member_data is None:
         return JSONResponse(content={"success":False,"message":"未登入系統，拒絕存取"})
     return JSONResponse(content={"success":True,"data":member_data})

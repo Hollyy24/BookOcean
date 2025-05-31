@@ -10,7 +10,8 @@ class Controller {
     constructor(model, view) {
         this.model = model;
         this.view = view;
-        this.init()
+
+        this.init(this.view.page)
         this.view.searchButton.addEventListener("click", async (event) => {
             event.preventDefault()
             const searchWay = this.view.searchWay.value
@@ -22,13 +23,76 @@ class Controller {
                 alert("請輸入關鍵字");
             }
         })
+        this.view.searchLeft.addEventListener("click", async () => {
+            this.view.page -= 1;
+            if (this.view.page < 0) {
+                alert("最前頁")
+                this.view.page = 0
+                return
+            }
+            const search = this.model.getQueryparameter()
+            const data = {
+                "way": search.way,
+                "value": search.value
+            }
+            const result = await this.model.fetchData(data, (this.view.page * 4))
+            if (result == false) {
+                alert("發生錯誤，請重新查詢")
+                window.location.href = '/'
+            }
+            if (result["books"].length === 0) {
+                this.view.bookText.textContent = "查無相關資料";
+                return
+            }
+            const books = result["books"];
+            this.view.bookContainer.textContent = ""
+            for (let index in books) {
+                this.view.createContent(books[index]);
+            }
+            document.querySelectorAll(".collect-button").forEach(button => {
+                button.addEventListener("click", () => {
+                    const book = button.id;
+                    this.model.addCollection(book);
+                });
+            })
 
+        })
+        this.view.searchRight.addEventListener("click", async () => {
+            this.view.page += 1;
+            const search = this.model.getQueryparameter()
+            const data = {
+                "way": search.way,
+                "value": search.value
+            }
+            const result = await this.model.fetchData(data, (this.view.page * 4) - 1)
+            if (result == false) {
+                alert("發生錯誤，請重新查詢")
+                window.location.href = '/'
+            }
+            if (result["books"].length === 0) {
+                alert("資料到底")
+                return
+            }
+            const books = result["books"];
+            this.view.bookContainer.textContent = ""
+            for (let index in books) {
+                this.view.createContent(books[index]);
+            }
+            document.querySelectorAll(".collect-button").forEach(button => {
+                button.addEventListener("click", () => {
+                    const book = button.id;
+                    this.model.addCollection(book);
+                });
+            })
+
+        })
     }
 
 
-    async init() {
+
+    async init(page) {
         const data = this.model.getQueryparameter();
-        const result = await this.model.fetchData(data);
+        const result = await this.model.fetchData(data, page);
         if (result == false) {
             alert("發生錯誤，請重新查詢")
             window.location.href = '/'
@@ -63,14 +127,19 @@ class Model {
     }
 
 
-    async fetchData(searchvalue) {
+    async fetchData(searchvalue, page) {
+        const search_data = {
+            "way": searchvalue.way,
+            "value": searchvalue.value,
+            "page": page
+        }
         try {
             const response = await fetch('/api/booksdata', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(searchvalue)
+                body: JSON.stringify(search_data)
             });
             const data = await response.json();
             return data;
@@ -127,6 +196,11 @@ class View {
         this.searchWay = document.querySelector('.search-category')
         this.searchInput = document.querySelector(".search-input");
         this.searchButton = document.querySelector(".search-button");
+        this.bookContainer = document.querySelector('.book-container');
+
+        this.page = 0;
+        this.searchLeft = document.querySelector("#search-left");
+        this.searchRight = document.querySelector("#search-right");
 
     }
 
@@ -144,7 +218,7 @@ class View {
     }
 
     createContent(data) {
-        const container = document.querySelector('#result-container');
+
 
         let bookItem = document.createElement("div");
         let bookName = document.createElement("h3");
@@ -179,6 +253,8 @@ class View {
         collectButton.textContent = "加入收藏";
         collectButton.id = `${data.source}/${data.id}`;
 
+        urlContainer.appendChild(bookUrl);
+        urlContainer.appendChild(collectButton)
 
 
         bookItem.appendChild(bookName);
@@ -187,9 +263,8 @@ class View {
         bookItem.appendChild(bookPrice);
         bookItem.appendChild(bookSource);
         bookItem.appendChild(urlContainer);
-        urlContainer.appendChild(bookUrl);
-        urlContainer.appendChild(collectButton);
-        container.appendChild(bookItem)
+        this.bookContainer.append(bookItem)
+
 
     }
 
