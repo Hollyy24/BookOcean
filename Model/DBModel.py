@@ -94,19 +94,19 @@ class DatabaseSystem:
         finally:
             cnx.close()
             
-    def get_data_by_author(self,author):
+    def get_data_by_author(self,author,page):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
             sql ="""
-                SELECT id,name,author,price,img,url,'博客來' AS source FROM books WHERE author LIKE %s
-                UNION
-                SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite WHERE author LIKE %s
-                UNION
-                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin WHERE author LIKE %s
+                (SELECT id,name,author,price,img,url,'博客來' AS source FROM books WHERE author LIKE %sLIMIT 4 OFFSET %s)
+                UNION ALL
+                (SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite WHERE author LIKE %sLIMIT 4 OFFSET %s)
+                UNION ALL
+                (SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin WHERE author LIKE %sLIMIT 4 OFFSET %s)
                 """
             author  = f'%{author}%'
-            cursor.execute(sql,(author,author,author,))
+            cursor.execute(sql,(author,page,author,page,author,page,))
             result = cursor.fetchall()
             return result
         except Exception as error:
