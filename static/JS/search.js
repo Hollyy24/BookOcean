@@ -16,7 +16,6 @@ class Controller {
             event.preventDefault()
             const searchWay = this.view.searchWay.value
             const searchValue = this.view.searchInput.value.trim()
-            console.log(searchValue, searchWay)
             if (searchValue) {
                 window.location.href = `/search/?way=${searchWay}&value=${searchValue}`;
             } else {
@@ -105,6 +104,14 @@ class Controller {
         for (let index in books) {
             this.view.createContent(books[index]);
         }
+        document.querySelectorAll(".book-info").forEach(element => {
+            element.addEventListener("click", () => {
+                const source = element.id.split("/")[0];
+                const id = element.id.split("/")[1];
+                window.location.href = `/book?source=${source}&id=${id}`;
+            });
+        });
+
         document.querySelectorAll(".collect-button").forEach(button => {
             button.addEventListener("click", () => {
                 const book = button.id;
@@ -221,6 +228,7 @@ class View {
 
 
         let bookItem = document.createElement("div");
+        let bookInfo = document.createElement("div");
         let bookName = document.createElement("h3");
         let bookImg = document.createElement("img");
         let bookAuthor = document.createElement("p");
@@ -231,6 +239,7 @@ class View {
         let collectButton = document.createElement("a");
 
         bookItem.className = "book-item";
+        bookInfo.className = "book-info";
         bookName.className = "book-name";
         bookImg.className = "book-img";
         bookAuthor.className = "book-author";
@@ -242,6 +251,7 @@ class View {
         collectButton.className = "collect-button";
 
         bookItem.title = data.name
+        bookInfo.id = data.source + "/" + data.id
         bookName.textContent = data.name;
         bookImg.src = data.img;
         bookAuthor.textContent = data.author;
@@ -257,11 +267,12 @@ class View {
         urlContainer.appendChild(collectButton)
 
 
-        bookItem.appendChild(bookName);
-        bookItem.appendChild(bookImg);
-        bookItem.appendChild(bookAuthor);
-        bookItem.appendChild(bookPrice);
+        bookInfo.appendChild(bookName);
+        bookInfo.appendChild(bookImg);
+        bookInfo.appendChild(bookAuthor);
+        bookInfo.appendChild(bookPrice);
         bookItem.appendChild(bookSource);
+        bookItem.appendChild(bookInfo);
         bookItem.appendChild(urlContainer);
         this.bookContainer.append(bookItem)
 

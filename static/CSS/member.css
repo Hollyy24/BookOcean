@@ -29,11 +29,53 @@
 
     }
 
-    #edit-button {
-        background-color: white;
-        color: #37647d;
+
+    #show-profile {
+        margin: 5px auto;
+    }
+
+
+    #update-form {
+        display: flex;
+        border-top: #d1dbe0 5px solid;
+        flex-direction: column;
+        justify-content: center;
+        margin: 10px;
+
+    }
+
+    #update-form input {
+        margin: 5px;
+        padding: 5px;
+    }
+
+    #update-form button {
+        width: 100px;
+        color: white;
+        background-color: #205781;
         border: none;
+        border-radius: 5px;
+        margin: 0 auto;
+    }
+
+    dialog {
+        background-color: white;
+        z-index: 10;
+        padding: 10px;
+    }
+
+    #img-open {
+        background-color: #205781;
+        color: white;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
+    }
+
+    #img-cancle {
+        border-radius: 5px;
+        cursor: pointer;
+
     }
 
     #collect-container {
@@ -117,11 +159,58 @@
 
 
     #profile-container {
+        display: flex;
         width: 90%;
         border: 1px solid #c3cac3D2;
         text-align: center;
         margin: 10px auto;
         color: #37647d;
+
+    }
+
+    #show-profile {
+        margin: 5px auto;
+    }
+
+
+    #update-form {
+        position: relative;
+        display: flex;
+        padding: 30px;
+        border-left: #d1dbe0 5px solid;
+        flex-direction: column;
+        justify-content: center;
+
+    }
+
+    #update-form input {
+        padding: 5px;
+    }
+
+    #update-form button {
+        width: 100px;
+        border-radius: 5px;
+        background-color: #205781;
+        color: white;
+        margin: 0 auto;
+    }
+
+    dialog {
+        background-color: white;
+        z-index: 10;
+    }
+
+    #img-open {
+        background-color: #205781;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #img-cancle {
+        border-radius: 5px;
+        cursor: pointer;
 
     }
 
@@ -138,12 +227,6 @@
 
     }
 
-    #edit-button {
-        background-color: white;
-        color: #37647d;
-        border: none;
-        cursor: pointer;
-    }
 
     #collect-container {
         width: 90%;
@@ -246,12 +329,56 @@
 
     }
 
-    #edit-button {
-        background-color: white;
-        color: #37647d;
+
+    #show-profile {
+        margin: 5px auto;
+    }
+
+
+    #update-form {
+        display: flex;
+        border-top: #d1dbe0 5px solid;
+        flex-direction: column;
+        justify-content: center;
+        margin: 10px;
+
+    }
+
+    #update-form input {
+        margin: 0px auto;
+        padding: 5px;
+        width: 150px;
+    }
+
+    #update-form button {
+        width: 100px;
+        padding: 5px;
+        color: white;
+        background-color: #205781;
         border: none;
+        border-radius: 5px;
+        margin: 0 auto;
+    }
+
+    dialog {
+        background-color: white;
+        z-index: 10;
+    }
+
+    #img-open {
+        background-color: #205781;
+        color: white;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
     }
+
+    #img-cancle {
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
 
     #collect-container {
         width: 90%;

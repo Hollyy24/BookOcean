@@ -23,6 +23,54 @@ class Controller {
 
         })
 
+        this.view.imgOpen.addEventListener("click", () => {
+            this.view.dialog.showModal();
+        })
+
+        this.view.imgCancle.addEventListener("click", () => {
+            this.view.dialog.close();
+        })
+
+        this.view.uploadButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const name = this.view.uploadName.value;
+            const password = this.view.uploadPassword.value;
+            if (!name || !password) {
+                alert("欄位不得空白")
+                return
+            }
+            const result = await this.model.uploadMemberdata(name, password);
+            if (result["success"] == false) {
+                alert("更新失敗！")
+                return
+            }
+            alert("更新成功")
+            localStorage.setItem("token", result["data"])
+            window.location.reload()
+        })
+
+        this.view.imgFile.addEventListener('change', function () {
+            const file = this.files[0];
+            const maxSize = 2 * 1024 * 1024;
+            if (file && file.size >= maxSize) {
+                alert("檔案大小不得超過 2MB！");
+                this.value = "";
+            }
+        });
+
+
+        this.view.imgUpload.addEventListener("click", async () => {
+            const file = this.view.imgFile.files[0];
+            if (!file) {
+                alert("未上傳檔案");
+                return
+            }
+            const result = await this.model.uploadImage(file)
+            console.log(result)
+            if (result == true) {
+                window.location.reload();
+            }
+        })
 
     }
 
@@ -51,6 +99,7 @@ class Controller {
         })
 
 
+
     }
 }
 
@@ -59,7 +108,7 @@ class Model {
         const token = localStorage.getItem('token')
         if (!token) { return false }
         try {
-            const response = await fetch('/api/user', {
+            const response = await fetch('/api/userSignin', {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -112,6 +161,45 @@ class Model {
         }
     }
 
+    async uploadMemberdata(name, password) {
+        const token = localStorage.getItem('token')
+        try {
+            const response = await fetch('/api/userSignin', {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    "name": name,
+                    "password": password
+                })
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    }
+
+    async uploadImage(file) {
+        const token = localStorage.getItem('token')
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await fetch(
+            "/api/uploads", {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            body: formData
+        })
+
+        if (response['success'] == false) {
+            return false;
+        }
+        return true;
+    }
     userLogout() {
         let token = localStorage.getItem('token');
         localStorage.removeItem('token');
@@ -126,13 +214,26 @@ class View {
         this.profile = document.querySelector("#profile");
         this.profileName = document.querySelector("#profile-name");
         this.profileEmail = document.querySelector("#profile-email");
+        this.profileImg = document.querySelector("#profile-img");
         this.collectionContainer = document.querySelector("tbody");
+        this.dialog = document.querySelector("#img-dialog");
+        this.imgOpen = document.querySelector("#img-open");
+        this.imgUpload = document.querySelector("#img-upload");
+        this.imgCancle = document.querySelector("#img-cancle");
+        this.imgFile = document.querySelector("#img-input");
+
+        this.uploadName = document.querySelector("#update-form-name")
+        this.uploadPassword = document.querySelector("#update-form-password")
+        this.uploadButton = document.querySelector("#update-form-button")
 
     }
 
     renderProfie(data) {
         this.profileName.textContent = data.name;
         this.profileEmail.textContent = data.email;
+        if (data.img) {
+            this.profileImg.style.backgroundImage = `url(${data.img})`;
+        }
 
     }
 
@@ -165,13 +266,13 @@ class View {
             bookAuthor.textContent = data[index].author;
             bookPrice.textContent = data[index].price;
             bookUrl.textContent = "連結"
+            bookUrl.target = "_blank"
             bookUrl.href = data[index].url;
             deleteButton.textContent = "刪除"
             colletcTime.textContent = data[index].time;
 
             urlTd.appendChild(bookUrl)
 
-            // itemContainer.appendChild(collectCheck);
             itemContainer.appendChild(bookName);
             itemContainer.appendChild(bookAuthor);
             itemContainer.appendChild(bookPrice);

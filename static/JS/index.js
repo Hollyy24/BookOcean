@@ -44,6 +44,13 @@ class Controller {
         for (let index in books) {
             this.view.createContent(books[index]);
         }
+        document.querySelectorAll(".random-item").forEach(element => {
+            element.addEventListener("click", () => {
+                const source = element.id.split("/")[0];
+                const id = element.id.split("/")[1];
+                window.location.href = `/book?source=${source}&id=${id}`;
+            })
+        })
     }
 
 
@@ -101,6 +108,7 @@ class View {
         url.target = "_blank";
 
         item.title = data.name
+        item.id = data.source + "/" + data.id;
         name.textContent = data.name;
         img.src = data.img;
         author.textContent = data.author;

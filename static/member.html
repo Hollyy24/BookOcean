@@ -25,20 +25,34 @@
     </nav>
     <hr id="nav-line">
     <main id="member-layout">
+
         <section id="profile-container">
-            <div id="profile-img"></div>
-            <p>暱稱</p>
-            <p id="profile-name"></p>
-            <p>會員信箱</p>
-            <p id="profile-email"></p>
-            <!-- <button id="edit-button"><strong>修改資料</strong></button> -->
+            <div id="show-profile">
+                <div id="profile-img"></div>
+                <button id="img-open">編輯照片</button>
+                <dialog id="img-dialog">
+                    <input id="img-input" type="file" accept="image/png, image/jpeg">
+                    <button id="img-upload">送出</button>
+                    <button id="img-cancle"> 取消 </button>
+
+                </dialog>
+                <p>暱稱</p>
+                <p id="profile-name"></p>
+                <p>會員信箱</p>
+                <p id="profile-email"></p>
+            </div>
+            <form id="update-form">
+                <h1> 修改會員資料 </h1>
+                <label>姓名</label><input id="update-form-name"><br>
+                <label>密碼</label><input id="update-form-password"><br>
+                <button id="update-form-button">更新</button>
+            </form>
         </section>
         <section id="collect-container">
             <h2>收藏資料</h2>
             <table class="collect-table">
                 <thead>
                     <tr>
-                        <!-- <th>選取</th> -->
                         <th>名稱</th>
                         <th>作者</th>
                         <th>價格</th>

@@ -30,6 +30,10 @@ async def index(request: Request):
 async def index(request: Request,way:str,value:str):
 	return FileResponse("static/search.html", media_type="text/html")
 
+@app.get("/book", include_in_schema=False)
+async def index(request: Request,source:str,id:str):
+	return FileResponse("static/book.html", media_type="text/html")
+
 @app.get("/member", include_in_schema=False)
 async def index(request: Request):
 	return FileResponse("static/member.html", media_type="text/html")

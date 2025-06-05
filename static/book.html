@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/CSS/style.css">
+    <title>BOOK OCEAN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Noto+Sans+TC:wght@100..900&family=Playwrite+DK+Loopet:wght@100..400&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+</head>
+
+<body>
+    <div id="dialog-background"></div>
+    <form id="log-in-form">
+        <h2>註冊帳號</h2>
+        <label><strong>暱稱</strong></label><input id="log-in-name"><br>
+        <label><strong>信箱</strong></label><input id="log-in-email"><br>
+        <label><strong>密碼</strong></label><input id="log-in-password">
+        <button id="log-in-button">註冊</button>
+        <p id="change-signin">點此登入</p>
+    </form>
+    <form id="sign-in-form">
+        <h2>登入帳號</h2>
+        <label><strong>信箱</strong></label><input id="sign-in-email"><br>
+        <label><strong>密碼</strong></label><input id="sign-in-password"><br>
+        <button id="sign-in-button">登入</button>
+        <p id="change-login">點此註冊</p>
+
+    </form>
+    <nav>
+        <img src="../static/img/logo.png">
+        <p id="nav-title">BOOKOCEAN</p>
+        <p id="nav-right">
+            <a id="login">註冊 </a> <a id="signin"> 登入</a><a id="member-center">會員中心</a>
+        </p>
+    </nav>
+    <hr id="nav-title">
+    <main id="book-bg">
+        <div id="data-title-container">
+            <h1><a class="book-data-name">點選購買</a></h1>
+            <a class="book-data-url">點選購買</a>
+            <a class="book-data-collect">加入收藏</a>
+        </div>
+        <section id="book-data-container">
+            <div class="book-data-info">
+                <img class="book-data-img">
+                <div>
+                    <p><strong>作 者：</strong><span class="book-data-author">author</span></p>
+                    <p><strong>出版商：</strong><span class="book-data-publisher">publish</span></p>
+                    <p><strong>出版日期：</strong><span class="book-data-publish-date">date</span></p>
+                    <p><strong>ISBN：</strong><span class="book-data-isbn">isbn</span></p>
+                    <p><strong>價格：</strong><span class="book-data-price">price</span> 元</p>
+                </div>
+            </div>
+            <div id="chart-container">
+                <h1>30天內價格變化</h1>
+                <canvas class="book-data-chart" id="BooksChart"></canvas>
+            </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>2025 © copyright</p>
+    </footer>
+</body>
+<script src="/static/JS/book.js"></script>
+<script src="/static/JS/base.js"></script>
+
+</html>

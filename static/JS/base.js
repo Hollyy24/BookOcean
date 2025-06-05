@@ -95,7 +95,7 @@ class BaseModel {
         const token = localStorage.getItem('token')
         if (!token) { return false }
         try {
-            const response = await fetch('/api/user', {
+            const response = await fetch('/api/userSignin', {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -113,8 +113,8 @@ class BaseModel {
 
     async userSignin(userData) {
         try {
-            const response = await fetch('/api/user', {
-                method: "PATCH",
+            const response = await fetch('/api/userSignin', {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -139,7 +139,7 @@ class BaseModel {
 
     async userLogin(userData) {
         try {
-            const response = await fetch('/api/user', {
+            const response = await fetch('/api/userLogin', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
