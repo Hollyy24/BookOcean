@@ -50,7 +50,6 @@ async def signin(user: SigninForm):
         if member_data == False:
             return JSONResponse(content={"success": False, "Message": "登入失敗"})
         token = member.create_JWT(member_data)
-        print("token:", token)
         return JSONResponse(content={"success": True, "memberdata": token})
     except Exception as error:
         print(f"Error:{error}")
@@ -91,7 +90,6 @@ async def upload_image(file: UploadFile = File(...), authorization: str = Header
     result = member.get_img(id)
     previous_url = result['img'] if result else None
     url = upload_files_to_S3(file, previous_url)
-    print("url:", url)
     if url is False:
         return JSONResponse(content={"error": True, "message": "上傳失敗!"})
     result = member.update_img_url(id, url)

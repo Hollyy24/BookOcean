@@ -53,11 +53,8 @@ class DatabaseSystem:
             """
             words = jieba.cut(name, cut_all=False)
             new_name = " ".join(words)
-            print(new_name)
             cursor.execute(sql, (new_name, new_name, page,))
             result = cursor.fetchall()
-            print("resutl count:", len(result))
-            print(result[0])
             return result
         except Exception as error:
             print(f'error:{error}')
@@ -156,7 +153,6 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             if source == "books":
-                print("books")
                 sql = "SELECT * FROM books WHERE id = %s"
             elif source == "eslite":
                 sql = "SELECT * FROM eslite WHERE id = %s"
@@ -183,7 +179,6 @@ class DatabaseSystem:
                 sql = "SELECT * FROM  sanmin_price_history WHERE book_id = %s"
             cursor.execute(sql, (id,))
             result = cursor.fetchall()
-            print(result)
             return result
         except Exception as error:
             print(f'error:{error}')

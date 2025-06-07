@@ -64,12 +64,10 @@ async def getData(book: BookDetail):
     search = DatabaseSystem()
     try:
         data = search.get_book_detail(book.source, book.id)
-        print("data:", data)
         data['publish_date'] = data['publish_date'].isoformat(
         )if data['publish_date'] else None
         data['source'] = book.source
         price_flow = search.get_price_flow(book.source, book.id)
-        print("price_flow:", price_flow)
         for item in price_flow:
             item["time"] = item["time"].isoformat() if item['time'] else None
         return JSONResponse(content={"success": True, "data": data, "priceflow": price_flow})

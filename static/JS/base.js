@@ -105,7 +105,6 @@ class BaseController {
 
         const notification = await this.model.fetchNotification()
         let count = 0;
-        console.log(notification.length)
         if (notification.length != 0) {
             this.view.notificationList.textContent = "";
             this.view.notification.style.width = "300px"

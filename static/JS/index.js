@@ -37,7 +37,6 @@ class Controller {
             event.preventDefault()
             const searchWay = this.view.searchWay.value
             const searchValue = this.view.searchInput.value.trim()
-            console.log(searchValue, searchWay)
             if (searchValue) {
                 window.location.href = `/search/?way=${searchWay}&value=${searchValue}`;
             } else {
