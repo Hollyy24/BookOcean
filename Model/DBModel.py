@@ -46,7 +46,7 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql = """
-                SELECT * FROM Allbooks
+                SELECT * FROM allbooks
                 WHERE MATCH(name_fulltext) AGAINST(%s IN BOOLEAN MODE)
                 ORDER BY MATCH(name_fulltext) AGAINST(%s IN BOOLEAN MODE) DESC
                 LIMIT 12 OFFSET %s;
@@ -66,7 +66,7 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql = """
-                SELECT * FROM Allbooks
+                SELECT * FROM allbooks
                 WHERE MATCH(author_fulltext) AGAINST(%s IN BOOLEAN MODE)
                 ORDER BY MATCH(author_fulltext) AGAINST(%s IN BOOLEAN MODE) DESC
                 LIMIT 12 OFFSET %s;
