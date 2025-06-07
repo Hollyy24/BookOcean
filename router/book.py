@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from Model.DBModel import DatabaseSystem
-from Model.memeber_model import MemberDatabase
+from Model.memeber_Model import MemberDatabase
 import random
 
 

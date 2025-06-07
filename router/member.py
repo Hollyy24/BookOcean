@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from Model.memeber_model import MemberDatabase
+from Model.memeber_Model import MemberDatabase
 from Model.s3_upload import *
 
 member_router = APIRouter()
