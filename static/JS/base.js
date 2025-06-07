@@ -64,6 +64,7 @@ class BaseController {
         })
         this.view.notificationIcon.addEventListener("click", (element) => {
             this.view.notificationList.style.display = "block";
+
         })
 
         this.view.notificationList.addEventListener("mouseleave", async (event) => {
@@ -203,7 +204,7 @@ class BaseModel {
             const notification = result["data"];
             return notification
         } catch (error) {
-            console.error("Fetch error:", error);
+            return
         }
     }
 

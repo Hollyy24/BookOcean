@@ -47,7 +47,6 @@ class Model {
         const parameter = new URLSearchParams(window.location.search);
         const source = parameter.get('source');
         const id = parameter.get('id');
-        console.log(typeof (id))
         const data = {
             "source": source,
             "id": id
@@ -67,7 +66,6 @@ class Model {
             const data = await response.json();
             return data;
         } catch (error) {
-            console.error("Fetch error:", error);
             return false
         }
     }
@@ -90,7 +88,6 @@ class Model {
             }
             return false;
         } catch (error) {
-            console.error("Fetch error:", error);
             return false
         }
     }
@@ -124,7 +121,7 @@ class Model {
             }
             ;
         } catch (error) {
-            console.error("Fetch error:", error);
+            return
         }
     }
 }
