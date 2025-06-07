@@ -58,13 +58,14 @@ class BooksCraw:
 class BooksRequest():
     def __init__(self):
         self.USER_AGENTS = [
-            "Mozilla/5.0（Windows NT 10.0；Win64；x64）AppleWebKit/537.36（KHTML，如 Gecko）Chrome/124.0.0.0 Safari/537.36",
-            "Mozilla/5.0（Windows NT 10.0；Win64；x64；rv:125.0） Gecko/20100101 Firefox/125.0",
-            "Mozilla/5.0（Macintosh；Intel Mac OS X 10_15_7）AppleWebKit/605.1.15（KHTML，如 Gecko）版本/16.1 Safari/605.1.15",
-            "Mozilla/5.0（Windows NT 10.0；Win64；x64）AppleWebKit/537.36（KHTML，如 Gecko）Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
-            "Mozilla/5.0（Linux；Android 10；K）AppleWebKit/537.36（KHTML，如 Gecko）Chrome/124.0.0.0 Mobile Safari/537.36",
-            "Mozilla/5.0（iPhone；CPU iPhone OS 16_6，如 Mac OS X）AppleWebKit/605.1.15（KHTML，如 Gecko）"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
+            "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko)"
         ]
+
         self.proxies = {
             "http": "http://123.45.67.89:8080",
             "https": "http://123.45.67.89:8080"
@@ -113,17 +114,15 @@ class BooksRequest():
             "User-Agent": random.choice(self.USER_AGENTS),
             "Referer": "https://www.books.com.tw/",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "zh-TW,zh;q=0.9,en;q=0.8",
+            "Accept-Language": "zh-TW",
             "Connection": "keep-alive"}
         try:
             URL = f"https://www.books.com.tw/products/{id}"
-            print("user -agent:", HEADERS["User-Agent"])
+            print("user-agent:", HEADERS["User-Agent"])
             print(URL)
             random_time = random.randint(10, 20)
             print(random_time)
-            response = requests.get(
-                url=URL, headers=HEADERS)
+            response = requests.get(url=URL, headers=HEADERS)
             soup = BeautifulSoup(response.text, 'html.parser')
             time.sleep(random_time)
             print("title:", soup.title.get_text())

@@ -98,11 +98,14 @@ class Controller {
         }
         if (result["books"].length === 0) {
             this.view.bookText.textContent = "查無相關資料";
+            this.view.bookText.style.color = "red";
             return
         }
         const books = result["books"];
+        const status = localStorage.getItem("token");
+        const collected = await this.model.Collected(status);
         for (let index in books) {
-            this.view.createContent(books[index]);
+            this.view.createContent(books[index], collected);
         }
         document.querySelectorAll(".book-info").forEach(element => {
             element.addEventListener("click", () => {
@@ -113,9 +116,18 @@ class Controller {
         });
 
         document.querySelectorAll(".collect-button").forEach(button => {
-            button.addEventListener("click", () => {
+            button.addEventListener("click", async () => {
                 const book = button.id;
-                this.model.addCollection(book);
+                if (book == "collected") {
+                    return
+                }
+                const result = await this.model.addCollection(book);
+                if (result == true) {
+                    button.textContent = "已收藏";
+                    button.style.backgroundColor = "white";
+                    button.style.color = "#37647d";
+                    button.disable = true;
+                }
             });
         })
     }
@@ -155,7 +167,24 @@ class Model {
             return false
         }
     }
-
+    async Collected(status) {
+        if (!status) { return false }
+        const compareData = this.getQueryparameter()
+        try {
+            const response = await fetch('/api/collect', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${status}`
+                },
+            });
+            const data = await response.json();
+            return data['data'];
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return false
+        }
+    }
 
     async addCollection(book) {
         const token = localStorage.getItem('token')
@@ -180,9 +209,11 @@ class Model {
             const result = await response.json();
             if (result["success"] == true) {
                 alert("收藏成功");
+                return true
             }
             if (result["success"] == false) {
                 alert("收藏失敗");
+                return false
             }
             ;
         } catch (error) {
@@ -213,20 +244,30 @@ class View {
 
 
     sourceColor(source) {
-        if (source == "博客來") {
+        if (source == "books") {
             return "#7ABD54"
         }
-        if (source == "誠品") {
+        if (source == "eslite") {
             return "#A50034"
         }
-        if (source == "三民") {
+        if (source == "sanmin") {
             return "#FFD400"
         }
     }
+    sourceName(source) {
+        if (source == "books") {
+            return "博客來"
+        }
+        if (source == "eslite") {
+            return "誠品"
+        }
+        if (source == "sanmin") {
+            return "三民"
+        }
+    }
 
-    createContent(data) {
 
-
+    createContent(data, collected) {
         let bookItem = document.createElement("div");
         let bookInfo = document.createElement("div");
         let bookName = document.createElement("h3");
@@ -256,7 +297,7 @@ class View {
         bookImg.src = data.img;
         bookAuthor.textContent = data.author;
         bookPrice.textContent = data.price + " 元";
-        bookSource.textContent = data.source;
+        bookSource.textContent = this.sourceName(data.source);
         bookSource.style.backgroundColor = this.sourceColor(data.source);
         bookUrl.textContent = "前往購買";
         bookUrl.href = data.url;
@@ -275,6 +316,18 @@ class View {
         bookItem.appendChild(bookInfo);
         bookItem.appendChild(urlContainer);
         this.bookContainer.append(bookItem)
+
+        if (!collected) { return }
+        for (let book of collected) {
+            if (data.id == book['book_id'] && data.source == book["book_source"]) {
+                collectButton.style.backgroundColor = "white";
+                collectButton.style.color = "#37647d";
+                collectButton.textContent = "於 " + book["time"] + " 收藏";
+                collectButton.style.cursor = "default";
+                collectButton.id = "collected";
+                break;
+            }
+        }
 
 
     }

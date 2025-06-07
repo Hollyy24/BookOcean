@@ -62,8 +62,16 @@ class BaseController {
             this.model.userLogin(user)
 
         })
+        this.view.notificationIcon.addEventListener("click", (element) => {
+            this.view.notificationList.style.display = "block";
+        })
 
-        this.view.siginForm.addEventListener("submit", (event) => {
+        this.view.notificationList.addEventListener("mouseleave", async (event) => {
+            event.currentTarget.style.display = "none";
+        })
+
+
+        this.view.siginForm.addEventListener("submit", async (event) => {
             event.preventDefault()
             let email = document.querySelector('#sign-in-email').value
             let password = document.querySelector('#sign-in-password').value
@@ -72,7 +80,11 @@ class BaseController {
                 "email": email,
                 "password": password
             }
-            this.model.userSignin(user)
+            const result = await this.model.userSignin(user)
+            if (result == true) {
+                this.model.updateUIAfterSignin();
+            }
+
 
         })
         this.view.memberCenter.addEventListener("click", () => {
@@ -82,11 +94,27 @@ class BaseController {
     }
     async init() {
         const result = await this.model.checkStatus()
-        if (result == false) { return }
-        this.view.memberCenter.style.display = "block"
-        this.view.login.style.display = "none";
-        this.view.signin.style.display = "none";
+        if (result == false) {
+            this.view.navRight.style.display = "none";
+            this.view.navCenter.style.display = "flex"
+            return
+        }
+        this.view.navRight.style.display = "flex";
+        this.view.navCenter.style.display = "none"
 
+
+        const notification = await this.model.fetchNotification()
+        let count = 0;
+        console.log(notification.length)
+        if (notification.length != 0) {
+            this.view.notificationList.textContent = "";
+            this.view.notification.style.width = "300px"
+        }
+        for (let data of notification) {
+            if (data.is_read == false) { count += 1 }
+            this.view.renderNotificaiton(data);
+        }
+        this.view.showNotification(count);
     }
 }
 
@@ -125,10 +153,12 @@ class BaseModel {
                 const token = result["memberdata"]
                 localStorage.setItem("token", token)
                 alert("登入成功")
-                window.location.reload();
+                return true
             }
             if (result["success"] == false) {
                 alert(result["Message"])
+                return false
+
             }
             ;
         } catch (error) {
@@ -149,7 +179,6 @@ class BaseModel {
             const result = await response.json();
             if (result["success"] == true) {
                 alert("註冊成功，請重新登入")
-                window.location.reload();
             }
             if (result["success"] == false) {
                 alert(result["Message"])
@@ -158,6 +187,39 @@ class BaseModel {
         } catch (error) {
             console.error("Fetch error:", error);
         }
+    }
+
+    async fetchNotification() {
+        const token = localStorage.getItem('token')
+        if (!token) { return false }
+        try {
+            const response = await fetch('/api/notification', {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            })
+            const result = await response.json();
+            if (result["success"] == false) { return false };
+            const notification = result["data"];
+            return notification
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    }
+
+
+    updateUIAfterSignin() {
+        document.querySelector("#dialog-background").style.display = "none";
+        document.querySelector("#sign-in-form").style.display = "none";
+        document.querySelector("#login").style.display = "none";
+        document.querySelector("#signin").style.display = "none";
+        document.querySelector("#member-center").style.display = "flex";
+
+        const event = new CustomEvent("loginSuccess", {
+            detail: { reload: "reload" }
+        });
+        window.dispatchEvent(event);
     }
 
 }
@@ -170,6 +232,9 @@ class BaseView {
         this.homePage = document.querySelector('#nav-title');
         this.login = document.querySelector('#login');
         this.signin = document.querySelector('#signin');
+        this.navCenter = document.querySelector("#nav-center");
+        this.navRight = document.querySelector("#nav-right");
+
         this.memberCenter = document.querySelector("#member-center");
 
         this.loginForm = document.querySelector("#log-in-form");
@@ -178,6 +243,10 @@ class BaseView {
 
         this.changeSignin = document.querySelector("#change-signin");
         this.changeLogin = document.querySelector("#change-login");
+
+        this.notificationIcon = document.querySelector("#notification-icon");
+        this.notificationNumber = document.querySelector("#notification-number");
+        this.notificationList = document.querySelector("#notification-list");
 
     }
     showLogin() {
@@ -201,6 +270,48 @@ class BaseView {
         this.dialogBackground.style.display = "none";
     }
 
+    showNotification(count) {
+        if (count == 0) { return }
+        this.notificationNumber.textContent = count;
+        this.notificationNumber.style.display = "block";
+    }
+    renderNotificaiton(data) {
+
+        let item = document.createElement("div");
+        let content = document.createElement("p");
+        let time = document.createElement("p");
+
+        item.className = "notification-item";
+        content.className = "notification-content";
+        time.className = "notification-time";
+
+
+        let text = `
+            你收藏的書本 
+            『${data.name} 價格已變動』
+            前次價格 ${data.old_price} 元
+            現在價格 ${data.new_price} 元 
+            `;
+        content.textContent = text;
+        time.textContent = data.time;
+        if (data.is_read == false) {
+            item.style.opacity = "0.8";
+        }
+
+        item.addEventListener("click", async () => {
+            const response = await fetch(`/api/notification/${data.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ is_read: true })
+            });
+            const result = await response.json()
+            if (result["success"] == true) { window.location.href = `/book?source=${data.book_source}&id=${data.book_id}`; }
+        });
+
+        item.appendChild(content)
+        item.appendChild(time);
+        this.notificationList.append(item)
+    }
 }
 
 

@@ -35,6 +35,16 @@
         ;
     }
 
+
+
+    .book-collected {
+        display: none;
+        color: #e34244;
+        text-align: center;
+        margin: 10px auto;
+        justify-content: center;
+    }
+
     .book-data-collect {
         background-color: #e34244;
         border-radius: 5px;
@@ -166,6 +176,15 @@
         font-size: 14px;
 
 
+    }
+
+
+    .book-collected {
+        display: none;
+        color: #e34244;
+        text-align: center;
+        margin: 10px auto;
+        justify-content: center;
     }
 
     .book-data-info {
@@ -306,6 +325,15 @@
         cursor: pointer;
         font-size: 14px;
         ;
+    }
+
+
+    .book-collected {
+        display: none;
+        color: #e34244;
+        text-align: center;
+        margin: 10px auto;
+        justify-content: center;
     }
 
     .book-data-collect {

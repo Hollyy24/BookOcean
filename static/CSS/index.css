@@ -157,7 +157,10 @@
         transform: translateX(-50%);
     }
 
-
+    .random-url-container {
+        display: flex;
+        flex-direction: column;
+    }
 
     .random-url {
         color: white;
@@ -169,6 +172,15 @@
         text-decoration: none;
     }
 
+    .random-collect {
+        color: white;
+        background-color: #37647d;
+        border-radius: 5px;
+        width: 100px;
+        margin: 5px auto;
+        padding: 5px;
+        text-decoration: none;
+    }
 
     #random-section {
         display: flex;
@@ -369,7 +381,10 @@
         transform: translateX(-50%);
     }
 
-
+    .random-url-container {
+        display: flex;
+        flex-direction: column;
+    }
 
     .random-url {
         color: white;
@@ -380,6 +395,17 @@
         padding: 5px;
         text-decoration: none;
     }
+
+    .random-collect {
+        color: white;
+        background-color: #37647d;
+        border-radius: 5px;
+        width: 100px;
+        margin: 5px auto;
+        padding: 5px;
+        text-decoration: none;
+    }
+
 
 
     #random-section {

@@ -1,8 +1,8 @@
 from mysql.connector import pooling
-import datetime
+from datetime import datetime, timezone, timedelta
 import os
 from dotenv import load_dotenv
-
+import jieba
 
 load_dotenv()
 
@@ -15,7 +15,6 @@ class DatabaseSystem:
             "password": os.getenv("MYSQL_PASSWORD"),
             "database": "BooksPrice"
         }
-        print(dbconfig["host"])
 
         self.cnxpool = pooling.MySQLConnectionPool(
             pool_name="mypool",
@@ -28,11 +27,11 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql = """
-                SELECT id,name,author,price,img,url,'博客來' AS source FROM books  
+                SELECT id,name,author,price,img,url,'books' AS source FROM books
                 UNION
-                SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite  
+                SELECT id,name,author,price,img,url,'eslite' AS source FROM eslite
                 UNION
-                SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin  
+                SELECT id,name,author,price,img,url,'sanmin' AS source FROM sanmin
                 """
             cursor.execute(sql,)
             result = cursor.fetchall()
@@ -47,30 +46,18 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql = """
-                WITH merged AS (
-                    SELECT id, name, price, isbn, source
-                    FROM (
-                        SELECT id, name, price, isbn, '博客來' AS source FROM books
-                        UNION ALL
-                        SELECT id, name, price, isbn, '誠品' AS source FROM eslite
-                        UNION ALL
-                        SELECT id, name, price, isbn, '三民' AS source FROM sanmin
-                    ) AS allbooks
-                ),
-                isbn_grouped AS (
-                    SELECT *, RANK() OVER (ORDER BY isbn) AS isbn_rank
-                    FROM merged
-                )
-                SELECT id, name, price, isbn, source
-                FROM isbn_grouped
-                WHERE isbn_rank BETWEEN 1 AND 2
-                ORDER BY isbn, source;
+                SELECT * FROM Allbooks
+                WHERE MATCH(name_fulltext) AGAINST(%s IN BOOLEAN MODE)
+                ORDER BY MATCH(name_fulltext) AGAINST(%s IN BOOLEAN MODE) DESC
+                LIMIT 12 OFFSET %s;
             """
-            name = f'%{name}%'
-            # cursor.execute(sql, (name, page,))
-            cursor.execute(sql,)
+            words = jieba.cut(name, cut_all=False)
+            new_name = " ".join(words)
+            print(new_name)
+            cursor.execute(sql, (new_name, new_name, page,))
             result = cursor.fetchall()
-            print("resutl:", result)
+            print("resutl count:", len(result))
+            print(result[0])
             return result
         except Exception as error:
             print(f'error:{error}')
@@ -82,42 +69,13 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql = """
-                (SELECT id,name,author,price,img,url,'博客來' AS source FROM books WHERE author LIKE %sLIMIT 4 OFFSET %s)
-                UNION ALL
-                (SELECT id,name,author,price,img,url,'誠品' AS source FROM eslite WHERE author LIKE %sLIMIT 4 OFFSET %s)
-                UNION ALL
-                (SELECT id,name,author,price,img,url,'三民' AS source FROM sanmin WHERE author LIKE %sLIMIT 4 OFFSET %s)
-                """
-            author = f'%{author}%'
-            cursor.execute(sql, (author, page, author, page, author, page,))
+                SELECT * FROM Allbooks
+                WHERE MATCH(author_fulltext) AGAINST(%s IN BOOLEAN MODE)
+                ORDER BY MATCH(author_fulltext) AGAINST(%s IN BOOLEAN MODE) DESC
+                LIMIT 12 OFFSET %s;
+            """
+            cursor.execute(sql, (author, author, page,))
             result = cursor.fetchall()
-            return result
-        except Exception as error:
-            print(f'error:{error}')
-        finally:
-            cnx.close()
-
-    def get_similar(self, data):
-        cnx = self.cnxpool.get_connection()
-        cursor = cnx.cursor(dictionary=True)
-        try:
-            sql = """
-                SELECT *
-                FROM
-                (SELECT id,name,author,price,img,isbn,url,'博客來' AS source FROM books
-                UNION ALL
-                SELECT id,name,author,price,img,isbn,url,'誠品' AS source FROM eslite
-                UNION ALL
-                SELECT id,name,author,price,img,isbn,url,'三民' AS source FROM sanmin )
-                AS ALLBOOKS
-                WHERE isbn = %s or name LIKE %s or author LIKE %s 
-                LIMIT 5
-                """
-            cursor.execute(
-                sql, (data['ISBN'], f"%{data['name']}%", f"%{data['author']}%",))
-            result = cursor.fetchall()
-            if len(result) == 0:
-                return None
             return result
         except Exception as error:
             print(f'error:{error}')
@@ -128,14 +86,15 @@ class DatabaseSystem:
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            time = datetime.datetime.now().strftime("%Y-%m-%d")
+            taiwan_tz = timezone(timedelta(hours=8))
+            time = datetime.now(taiwan_tz).strftime("%Y-%m-%d")
             member_id = user_id
             book_id = data.book_id
-            if data.book_source == "誠品":
+            if data.book_source == "eslite":
                 book_source = "eslite"
-            elif data.book_source == "博客來":
+            elif data.book_source == "books":
                 book_source = 'books'
-            if data.book_source == "三民":
+            if data.book_source == "sanmin":
                 book_source = 'sanmin'
             sql = "INSERT INTO collection (member_id,book_id,book_source,time) VALUES (%s,%s,%s,%s)"
             cursor.execute(sql, (member_id, book_id, book_source, time,))
@@ -196,17 +155,18 @@ class DatabaseSystem:
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            if source == "博客來":
-                sql = "SELECT * FROM  books WHERE  id  = %s"
-            elif source == "誠品":
-                sql = "SELECT * FROM  eslite WHERE  id = %s"
-            elif source == "三民":
-                sql = "SELECT * FROM  sanmin WHERE  id = %s"
+            if source == "books":
+                print("books")
+                sql = "SELECT * FROM books WHERE id = %s"
+            elif source == "eslite":
+                sql = "SELECT * FROM eslite WHERE id = %s"
+            elif source == "sanmin":
+                sql = "SELECT * FROM sanmin WHERE id = %s"
             cursor.execute(sql, (id,))
             result = cursor.fetchone()
             return result
         except Exception as error:
-            print(f'error:{error}')
+            print(f'取得書本細節資料錯誤:{error}')
             return False
         finally:
             cnx.close()
@@ -215,14 +175,15 @@ class DatabaseSystem:
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            if source == "博客來":
+            if source == "books":
                 sql = "SELECT * FROM  books_price_history WHERE  book_id  =%s"
-            elif source == "誠品":
+            elif source == "eslite":
                 sql = "SELECT * FROM  eslite_price_history WHERE book_id =%s"
-            elif source == "三民":
+            elif source == "sanmin":
                 sql = "SELECT * FROM  sanmin_price_history WHERE book_id = %s"
             cursor.execute(sql, (id,))
             result = cursor.fetchall()
+            print(result)
             return result
         except Exception as error:
             print(f'error:{error}')

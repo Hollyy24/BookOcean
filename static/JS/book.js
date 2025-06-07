@@ -1,4 +1,3 @@
-
 window.addEventListener("DOMContentLoaded", function () {
     const model = new Model()
     const view = new View()
@@ -22,8 +21,18 @@ class Controller {
             window.location.href = '/'
             return
         }
-        this.view.renderData(result['data'])
+
+        this.view.renderData(result['data'],)
         this.view.drawChart(result['priceflow'])
+
+        const status = localStorage.getItem("token");
+        const collected = await this.model.Collected(status);
+        if (collected) {
+            this.view.bookCollectButton.style.display = "none";
+            this.view.bookCollected.style.display = "flex";
+            this.view.bookCollected.textContent = "於 " + collected + " 收藏";
+            return
+        }
         this.view.bookCollectButton.addEventListener("click", async () => {
             this.model.addCollection(this.view.bookCollectButton.id)
         }
@@ -38,6 +47,7 @@ class Model {
         const parameter = new URLSearchParams(window.location.search);
         const source = parameter.get('source');
         const id = parameter.get('id');
+        console.log(typeof (id))
         const data = {
             "source": source,
             "id": id
@@ -56,6 +66,29 @@ class Model {
             });
             const data = await response.json();
             return data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return false
+        }
+    }
+    async Collected(status) {
+        if (!status) { return false }
+        const compareData = this.getQueryparameter()
+        try {
+            const response = await fetch('/api/collect', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${status}`
+                },
+            });
+            const data = await response.json();
+            for (let book of data['data']) {
+                if (book['book_source'] == compareData['source'] && book['book_id'] == compareData['id']) {
+                    return book["time"]
+                }
+            }
+            return false;
         } catch (error) {
             console.error("Fetch error:", error);
             return false
@@ -84,6 +117,7 @@ class Model {
             const result = await response.json();
             if (result["success"] == true) {
                 alert("收藏成功");
+                window.location.reload()
             }
             if (result["success"] == false) {
                 alert("收藏失敗");
@@ -109,6 +143,7 @@ class View {
         this.bookPrice = document.querySelector('.book-data-price');
         this.bookUrl = document.querySelector('.book-data-url');
         this.bookCollectButton = document.querySelector('.book-data-collect');
+        this.bookCollected = document.querySelector(".book-collected");
     }
 
     renderData(data) {
@@ -169,11 +204,8 @@ class View {
             }
         };
         const myChart = new Chart(ctx, config);
-
-
     }
 }
-
 
 
 

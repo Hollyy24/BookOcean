@@ -44,7 +44,6 @@ async def get_collect_book(authorization: str = Header(None)):
     token = authorization.split("Bearer ")[1]
     member_id = member.check_user_status(token)['id']
     data = search.get_collect_book(member_id)
-
     if data:
         return JSONResponse(content={"success": True, "data": data})
     return JSONResponse(content={"success": False})

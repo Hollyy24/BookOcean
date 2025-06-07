@@ -16,7 +16,6 @@ class EsliteRequest:
             for i in range(1, 6):
                 time.sleep(1)
                 url = f'https://athena.eslite.com/api/v1/best_sellers/online/day?l1=3&page={i}&per_page=20'
-                print(i)
                 response = requests.get(url)
                 data = response.json()
                 books = data["products"]
@@ -38,9 +37,9 @@ class EsliteRequest:
             print(f"誠品抓取資料發生錯誤：{e}")
         return result
 
-    def get_book_data(self, id):
+    def get_book_data(self, id_list):
         try:
-            url = f'https://athena.eslite.com/api/v1/products/{id}'
+            url = f'https://athena.eslite.com/api/v1/products/{id_list}'
             response = requests.get(url)
             data = response.json()
             book_name = data['name']

@@ -78,7 +78,7 @@ async def check_status(authorization: str = Header(None)):
     token = authorization.split('Bearer')[1].strip()
     member_data = member.check_user_status(token)
     img = member.get_img(member_data['id'])
-    member_data['img'] = img['img']
+    member_data['img'] = img['img'] if img else None
     if member_data is None:
         return JSONResponse(content={"success": False, "message": "未登入系統，拒絕存取"})
     return JSONResponse(content={"success": True, "data": member_data})
@@ -88,8 +88,10 @@ async def check_status(authorization: str = Header(None)):
 async def upload_image(file: UploadFile = File(...), authorization: str = Header(None)):
     token = authorization.split("Bearer ")[1]
     id = member.check_user_status(token)['id']
-    previous_url = member.get_img(id)['img']
+    result = member.get_img(id)
+    previous_url = result['img'] if result else None
     url = upload_files_to_S3(file, previous_url)
+    print("url:", url)
     if url is False:
         return JSONResponse(content={"error": True, "message": "上傳失敗!"})
     result = member.update_img_url(id, url)
@@ -98,3 +100,21 @@ async def upload_image(file: UploadFile = File(...), authorization: str = Header
     if result is False:
         return JSONResponse(content={"error": True, "message": "發生錯誤!"})
     return JSONResponse(content={"ok": True})
+
+
+@member_router.get("/api/notification")
+async def notify(authorization: str = Header(None)):
+    token = authorization.split("Bearer ")[1]
+    id = member.check_user_status(token)['id']
+    result = member.get_notification(id)
+    for item in result:
+        item['time'] = item['time'].isoformat() if item['time'] else None
+    if result is False:
+        return JSONResponse(content={"success": False})
+    return JSONResponse(content={"success": True, "data": result})
+
+
+@member_router.put("/api/notification/{notification_id}")
+def update_notification(notification_id: int):
+    result = member.update_notification(notification_id)
+    return JSONResponse(content={"success": result})

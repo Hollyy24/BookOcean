@@ -1,5 +1,5 @@
 from mysql.connector import pooling
-import datetime
+from datetime import datetime, timezone, timedelta
 import os
 from dotenv import load_dotenv
 
@@ -28,14 +28,13 @@ class CrawDB:
         cursor = cnx.cursor(dictionary=True)
         try:
             if source == "books":
-                print("books")
-                sql = "SELECT id,URL FROM books "
+                sql = "SELECT id,url FROM books "
             elif source == "eslite":
                 print("eslite")
-                sql = "SELECT id,URL FROM eslite "
+                sql = "SELECT id,url FROM eslite "
             elif source == "sanmin":
                 print("sanmin")
-                sql = "SELECT id,URL FROM sanmin "
+                sql = "SELECT id,url FROM sanmin "
             else:
                 print("none")
             cursor.execute(sql,)
@@ -181,7 +180,8 @@ class CrawDB:
     def add_daily_price(self, source, data):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor()
-        now = datetime.datetime.now().strftime("%Y-%m-%d")
+        taiwan_tz = timezone(timedelta(hours=8))
+        now = datetime.now(taiwan_tz).strftime("%Y-%m-%d")
         print("add daily price")
         try:
             if source == "books":

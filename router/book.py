@@ -40,7 +40,7 @@ async def getbook():
         result = [books[i] for i in number]
         return result
     except Exception as e:
-        print(e)
+        print("取得所有書籍資料", e)
 
 
 @book_router.post("/api/booksdata")
@@ -55,7 +55,7 @@ async def getData(book: BookValue):
             return JSONResponse(content={"success": False, "Message": "資料讀取錯誤"})
         return JSONResponse(content={"success": True, "books": result})
     except Exception as error:
-        print(f"Error:{error}")
+        print(f"藉由書名、作者取得資料錯誤:{error}")
         return JSONResponse(content={"success": False, "Message": error})
 
 
@@ -64,10 +64,15 @@ async def getData(book: BookDetail):
     search = DatabaseSystem()
     try:
         data = search.get_book_detail(book.source, book.id)
-        price_flow = search.get_price_flow(book.source, book.id)
-        data['publish_date'] = data['publish_date'].isoformat()
+        print("data:", data)
+        data['publish_date'] = data['publish_date'].isoformat(
+        )if data['publish_date'] else None
         data['source'] = book.source
+        price_flow = search.get_price_flow(book.source, book.id)
+        print("price_flow:", price_flow)
+        for item in price_flow:
+            item["time"] = item["time"].isoformat() if item['time'] else None
         return JSONResponse(content={"success": True, "data": data, "priceflow": price_flow})
     except Exception as error:
-        print(f"Error:{error}")
+        print(f"取得書本細節錯誤:{error}")
         return JSONResponse(content={"success": False, "Message": "讀取資料錯誤。"})

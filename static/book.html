@@ -37,9 +37,19 @@
     <nav>
         <img src="../static/img/logo.png">
         <p id="nav-title">BOOKOCEAN</p>
-        <p id="nav-right">
-            <a id="login">註冊 </a> <a id="signin"> 登入</a><a id="member-center">會員中心</a>
-        </p>
+        <div id="nav-center">
+            <a id="login">註冊 </a>
+            <a id="signin"> 登入</a>
+        </div>
+        <div id="nav-right">
+            <a id="member-center">會員中心</a>
+            <img id="notification-icon" src="../static/img/mail.png">
+            <p id="notification-number"></p>
+            <div id="notification-list">
+                <div class="notification-item">無通知</div>
+            </div>
+        </div>
+    </nav>
     </nav>
     <hr id="nav-title">
     <main id="book-bg">
@@ -47,6 +57,8 @@
             <h1><a class="book-data-name">點選購買</a></h1>
             <a class="book-data-url">點選購買</a>
             <a class="book-data-collect">加入收藏</a>
+            <a class="book-collected">已收藏</a>
+
         </div>
         <section id="book-data-container">
             <div class="book-data-info">
@@ -60,7 +72,7 @@
                 </div>
             </div>
             <div id="chart-container">
-                <h1>30天內價格變化</h1>
+                <h1>價格變化</h1>
                 <canvas class="book-data-chart" id="BooksChart"></canvas>
             </div>
             </div>
