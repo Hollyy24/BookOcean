@@ -72,6 +72,16 @@ class Controller {
             }
         })
 
+        this.view.notificationIcon.addEventListener("click", (element) => {
+            this.view.notificationList.style.display = "block";
+
+        })
+
+        this.view.notificationList.addEventListener("mouseleave", async (event) => {
+            event.currentTarget.style.display = "none";
+        })
+
+
     }
 
     async init() {
@@ -97,6 +107,19 @@ class Controller {
                     alert("刪除失敗")
             })
         })
+
+        const notification = await this.model.fetchNotification()
+        let count = 0;
+        if (!notification) { return }
+        if (notification.length != 0) {
+            this.view.notificationList.textContent = "";
+            this.view.notification.style.width = "300px"
+        }
+        for (let data of notification) {
+            if (data.is_read == false) { count += 1 }
+            this.view.renderNotificaiton(data);
+        }
+        this.view.showNotification(count);
 
 
 
@@ -204,6 +227,25 @@ class Model {
         let token = localStorage.getItem('token');
         localStorage.removeItem('token');
     }
+
+    async fetchNotification() {
+        const token = localStorage.getItem('token')
+        if (!token) { return false }
+        try {
+            const response = await fetch('/api/notification', {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            })
+            const result = await response.json();
+            if (result["success"] == false) { return false };
+            const notification = result["data"];
+            return notification
+        } catch (error) {
+            return
+        }
+    }
 }
 
 
@@ -225,6 +267,9 @@ class View {
         this.uploadName = document.querySelector("#update-form-name")
         this.uploadPassword = document.querySelector("#update-form-password")
         this.uploadButton = document.querySelector("#update-form-button")
+        this.notificationIcon = document.querySelector("#notification-icon");
+        this.notificationNumber = document.querySelector("#notification-number");
+        this.notificationList = document.querySelector("#notification-list");
 
     }
 
@@ -283,6 +328,48 @@ class View {
 
             this.collectionContainer.appendChild(itemContainer);
         }
+    }
+    showNotification(count) {
+        if (count == 0) { return }
+        this.notificationNumber.textContent = count;
+        this.notificationNumber.style.display = "block";
+    }
+    renderNotificaiton(data) {
+
+        let item = document.createElement("div");
+        let content = document.createElement("p");
+        let time = document.createElement("p");
+
+        item.className = "notification-item";
+        content.className = "notification-content";
+        time.className = "notification-time";
+
+
+        let text = `
+            你收藏的書本 
+            『${data.name} 價格已變動』
+            前次價格 ${data.old_price} 元
+            現在價格 ${data.new_price} 元 
+            `;
+        content.textContent = text;
+        time.textContent = data.time;
+        if (data.is_read == false) {
+            item.style.opacity = "0.8";
+        }
+
+        item.addEventListener("click", async () => {
+            const response = await fetch(`/api/notification/${data.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ is_read: true })
+            });
+            const result = await response.json()
+            if (result["success"] == true) { window.location.href = `/book?source=${data.book_source}&id=${data.book_id}`; }
+        });
+
+        item.appendChild(content)
+        item.appendChild(time);
+        this.notificationList.append(item)
     }
 }
 
