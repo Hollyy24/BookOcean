@@ -27,7 +27,7 @@ class NotificationDatabase:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql = """
-                SELECT Notification.*, allbooks.name, allbooks.price, allbooks.img
+                SELECT notification.*, allbooks.name, allbooks.price, allbooks.img
                 FROM notification 
                 LEFT JOIN allbooks 
                 ON notification.book_id = allbooks.id 
