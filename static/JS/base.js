@@ -107,10 +107,8 @@ class BaseController {
         const notification = await this.model.fetchNotification()
         let count = 0;
         if (!notification) { return }
-        if (notification.length != 0) {
-            this.view.notificationList.textContent = "";
-            this.view.notification.style.width = "300px"
-        }
+        this.view.notificationList.textContent = "";
+        this.view.notification.style.width = "300px"
         for (let data of notification) {
             if (data.is_read == false) { count += 1 }
             this.view.renderNotificaiton(data);
@@ -202,10 +200,9 @@ class BaseModel {
             })
             const result = await response.json();
             if (result["success"] == false) { return false };
-            const notification = result["data"];
             return notification
         } catch (error) {
-            return
+            return false
         }
     }
 

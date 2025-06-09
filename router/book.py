@@ -2,7 +2,7 @@ from fastapi import *
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from Model.DBModel import DatabaseSystem
+from Model.book_model import DatabaseSystem
 from Model.memeber_Model import MemberDatabase
 import random
 
@@ -52,11 +52,11 @@ async def getData(book: BookValue):
         elif book.way == "author":
             result = search.get_data_by_author(book.value, book.page)
         if result is False:
-            return JSONResponse(content={"success": False, "Message": "資料讀取錯誤"})
-        return JSONResponse(content={"success": True, "books": result})
+            return JSONResponse(status_code=500, content={"success": False, "Message": "資料讀取錯誤"})
+        return JSONResponse(status_code=500, content={"success": True, "books": result})
     except Exception as error:
         print(f"藉由書名、作者取得資料錯誤:{error}")
-        return JSONResponse(content={"success": False, "Message": error})
+        return JSONResponse(status_code=500, content={"success": False, "Message": error})
 
 
 @book_router.post("/api/booksdetail")
@@ -70,7 +70,7 @@ async def getData(book: BookDetail):
         price_flow = search.get_price_flow(book.source, book.id)
         for item in price_flow:
             item["time"] = item["time"].isoformat() if item['time'] else None
-        return JSONResponse(content={"success": True, "data": data, "priceflow": price_flow})
+        return JSONResponse(status_code=200, content={"success": True, "data": data, "priceflow": price_flow})
     except Exception as error:
         print(f"取得書本細節錯誤:{error}")
-        return JSONResponse(content={"success": False, "Message": "讀取資料錯誤。"})
+        return JSONResponse(status_code=500, content={"success": False, "Message": "讀取資料錯誤。"})

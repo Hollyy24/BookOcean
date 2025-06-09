@@ -63,7 +63,7 @@ class Controller {
                 "way": search.way,
                 "value": search.value
             }
-            const result = await this.model.fetchData(data, (this.view.page * 4) - 1)
+            const result = await this.model.fetchData(data, (this.view.page * 12) - 1)
             if (result == false) {
                 alert("發生錯誤，請重新查詢")
                 window.location.href = '/'
