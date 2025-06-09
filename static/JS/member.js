@@ -77,8 +77,8 @@ class Controller {
 
         })
 
-        this.view.notificationList.addEventListener("mouseleave", async (event) => {
-            event.currentTarget.style.display = "none";
+        this.view.notificationLeave.addEventListener("click", async (event) => {
+            this.view.notificationList.style.display = "none";
         })
 
 
@@ -267,9 +267,12 @@ class View {
         this.uploadName = document.querySelector("#update-form-name")
         this.uploadPassword = document.querySelector("#update-form-password")
         this.uploadButton = document.querySelector("#update-form-button")
+
         this.notificationIcon = document.querySelector("#notification-icon");
         this.notificationNumber = document.querySelector("#notification-number");
         this.notificationList = document.querySelector("#notification-list");
+        this.notificationContainer = document.querySelector("#notification-container");
+        this.notificationLeave = document.querySelector("#notification-leave");
 
     }
 
@@ -369,7 +372,7 @@ class View {
 
         item.appendChild(content)
         item.appendChild(time);
-        this.notificationList.append(item)
+        this.notificationLeave.append(item)
     }
 }
 
