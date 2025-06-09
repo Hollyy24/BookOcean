@@ -28,11 +28,11 @@ class NotificationDatabase:
         try:
             sql = """
                 SELECT Notification.*, allbooks.name, allbooks.price, allbooks.img
-                FROM Notification 
+                FROM notification 
                 LEFT JOIN allbooks 
-                ON Notification.book_id = allbooks.id 
-                AND Notification.book_source = allbooks.source
-                WHERE Notification.member_id = %s
+                ON notification.book_id = allbooks.id 
+                AND notification.book_source = allbooks.source
+                WHERE notification.member_id = %s
             """
             cursor.execute(sql, (id,))
             result = cursor.fetchall()
@@ -48,7 +48,7 @@ class NotificationDatabase:
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            sql = "UPDATE Notification SET is_read= %s WHERE  id = %s "
+            sql = "UPDATE notification SET is_read= %s WHERE  id = %s "
             cursor.execute(sql, (True, id,))
             cnx.commit()
             return True
