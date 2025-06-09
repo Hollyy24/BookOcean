@@ -36,6 +36,7 @@ class NotificationDatabase:
             """
             cursor.execute(sql, (id,))
             result = cursor.fetchall()
+            print("notification result:", result)
             return result
         except Exception as error:
             print(f"錯誤：{error}")

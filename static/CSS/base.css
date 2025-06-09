@@ -108,6 +108,29 @@ nav img {
     z-index: 10;
 }
 
+#notification-leave {
+    position: absolute;
+    background-color: #819aa8;
+    border-radius: 5px;
+    top: 5px;
+    right: 5px;
+    padding: 5px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+#notification-container {
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    top: 45px;
+    right: 5px;
+    width: 100px;
+    padding: 10px;
+    font-size: 12px;
+    z-index: 10;
+}
+
 .notification-item {
     position: relative;
     border: 1px solid #819aa8;

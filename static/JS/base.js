@@ -67,8 +67,8 @@ class BaseController {
 
         })
 
-        this.view.notificationList.addEventListener("mouseleave", async (event) => {
-            event.currentTarget.style.display = "none";
+        this.view.notificationLeave.addEventListener("click", async (event) => {
+            this.view.notificationList.style.display = "none";
         })
 
 
@@ -198,7 +198,9 @@ class BaseModel {
                     "Authorization": `Bearer ${token}`,
                 },
             })
+            console.log("notification response:", response)
             const result = await response.json();
+            console.log("notification result", result)
             if (result["success"] == false) { return false };
             return notification
         } catch (error) {
@@ -245,7 +247,8 @@ class BaseView {
         this.notificationIcon = document.querySelector("#notification-icon");
         this.notificationNumber = document.querySelector("#notification-number");
         this.notificationList = document.querySelector("#notification-list");
-
+        this.notificationContainer = document.querySelector("#notification-container");
+        this.notificationLeave = document.querySelector("#notification-leave");
     }
     showLogin() {
         this.loginForm.style.display = "block";
@@ -308,7 +311,7 @@ class BaseView {
 
         item.appendChild(content)
         item.appendChild(time);
-        this.notificationList.append(item)
+        this.notificationContainer.append(item)
     }
 }
 

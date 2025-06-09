@@ -18,7 +18,7 @@ async def notify(authorization: str = Header(None)):
     for item in result:
         item['time'] = item['time'].isoformat() if item['time'] else None
     if result is False:
-        return JSONResponse(status_code=200, content={"success": False})
+        return JSONResponse(status_code=500, content={"success": False})
     return JSONResponse(status_code=200, content={"success": True, "data": result})
 
 
