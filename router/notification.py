@@ -15,10 +15,10 @@ async def notify(authorization: str = Header(None)):
     token = authorization.split("Bearer ")[1]
     id = member.check_user_status(token)['id']
     result = notification.get_notification(id)
+    if result is None:
+        return JSONResponse(status_code=200, content={"success": True, "data": None})
     for item in result:
         item['time'] = item['time'].isoformat() if item['time'] else None
-    if result is False:
-        return JSONResponse(status_code=500, content={"success": False})
     return JSONResponse(status_code=200, content={"success": True, "data": result})
 
 

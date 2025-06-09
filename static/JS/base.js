@@ -198,10 +198,14 @@ class BaseModel {
                     "Authorization": `Bearer ${token}`,
                 },
             })
-            console.log("notification response:", response)
             const result = await response.json();
-            console.log("notification result", result)
-            if (result["success"] == false) { return false };
+
+            if (result["success"] == false) {
+                return false
+            };
+            if (result["data"] == null) {
+                return false
+            };
             return notification
         } catch (error) {
             return false
