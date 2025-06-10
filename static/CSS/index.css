@@ -92,15 +92,13 @@
         border: none;
         height: 1px;
         background-color: #ccc;
-        width: 60%;
+        width: 85%;
         margin: 10px auto;
     }
 
 
-
-
     #random-container {
-        width: 90%;
+        width: 100%;
         max-width: 1200px;
         margin: 20px auto;
         display: flex;
@@ -113,8 +111,8 @@
 
     .random-item {
         position: relative;
-        min-width: 200px;
-        margin: 5px;
+        min-width: 250px;
+        margin: 10px;
         list-style: none;
         padding: 0px;
         cursor: pointer;
@@ -205,14 +203,14 @@
     }
 
     .left-button {
-        background-image: url("../img/leftarrow.svg");
+        background-image: url("../img/leftarrow.png");
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
     }
 
     .right-button {
-        background-image: url("../img/rightarrow.svg");
+        background-image: url("../img/rightarrow.png");
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
@@ -316,7 +314,7 @@
         border: none;
         height: 1px;
         background-color: #ccc;
-        width: 60%;
+        width: 85%;
         margin: 10px auto;
     }
 
@@ -328,6 +326,7 @@
         max-width: 1200px;
         margin: 20px auto;
         display: flex;
+        flex-direction: column;
         overflow-x: auto;
         scroll-behavior: smooth;
         padding: 15px;
@@ -337,8 +336,8 @@
 
     .random-item {
         position: relative;
-        min-width: 150px;
-        margin: 5px;
+        min-width: 260px;
+        margin: 20px;
         list-style: none;
         padding: 0px;
         cursor: pointer;
@@ -418,30 +417,7 @@
 
     .left-button,
     .right-button {
-        height: 50px;
-        width: 50px;
-        align-content: center;
-        cursor: pointer;
+        display: none;
     }
 
-    .left-button:hover,
-    .right-button:hover {
-        transform: scale(1.05);
-        cursor: pointer;
-    }
-
-    .left-button {
-        background-image: url("../img/leftarrow.svg");
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-
-    .right-button {
-        background-image: url("../img/rightarrow.svg");
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-
-    }
 }

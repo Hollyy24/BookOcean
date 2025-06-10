@@ -182,8 +182,9 @@ nav img {
 #sign-in-form {
     display: none;
     color: #205781;
-    border: 1px solid #205781;
+    border: 1px solid #37647d;
     background-color: white;
+    border-radius: 20px;
     width: 300px;
     position: absolute;
     left: 50%;
@@ -199,8 +200,9 @@ nav img {
 
 #sign-in-form h2,
 #log-in-form h2 {
-    background-color: #205781;
-    padding: 10px;
+    background-color: #37647d;
+    border-radius: 19px 19px 0px 0px;
+    padding: 11px;
     color: white;
     margin-top: 0px;
     text-align: center;
@@ -224,7 +226,7 @@ nav img {
     width: 100px;
     padding: 10px;
     margin: 10px;
-    background-color: #205781;
+    background-color: #37647d;
     border: none;
     color: #ddd;
     cursor: pointer;

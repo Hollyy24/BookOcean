@@ -171,8 +171,8 @@ class View {
             datasets: [{
                 label: '價格變動',
                 data: data_array,
-                borderColor: '#36A2EB',
-                backgroundColor: 'rgba(54, 162, 235, 1)',
+                borderColor: '#37647d;',
+                backgroundColor: '#37647d',
                 tension: 0.4,           // 曲線平滑度 (0 ~ 1)
                 fill: 'while',            // 是否填滿底色
                 pointStyle: 'rect',   // 點的樣式（circle、rect、triangle...）
