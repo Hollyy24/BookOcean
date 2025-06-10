@@ -80,11 +80,13 @@ class BooksRequest():
                     book_publisher = item.split("：")[1]
                 elif "出版日期" in item:
                     publish_date = item.split("：")[1].replace("/", "-")
-            book_name = soup.find('meta', property='og:title')['content']
-            book_price = soup.find('meta', property='product:price:amount')[
-                'content']
+            book_name = soup.find('meta', property='og:title')['content'] if soup.find(
+                'meta', property='og:title')['content'] else None
+            book_price = soup.find('meta', property='product:price:amount')['content'] if soup.find(
+                'meta', property='product:price:amount')['content'] else None
             book_img = soup.find('meta', property='og:image')[
-                'content'].split('https://')[2]
+                'content'].split('https://')[2] if soup.find('meta', property='og:image')[
+                'content'].split('https://')[2] else None
             result = {
                 "source": "books",
                 "name": book_name,
@@ -255,25 +257,26 @@ class EsliteRequest:
             url = f'https://athena.eslite.com/api/v1/products/{id}'
             response = requests.get(url)
             data = response.json()
-            book_name = data['name']
-            book_author = data["author"]
-            book_price = int(data["retail_price"])
-            book_img = data['photos'][0]['small_path']
-            isbn13 = data["isbn13"]
-            book_publisher = data["supplier"]
-            publish_date = data["manufacturer_date"][:10]
+            book_name = data['name'] if data["name"] else None
+            book_author = data["author"] if data["author"] else None
+            book_price = int(data["retail_price"]
+                             ) if data["retail_price"] else None
+            book_img = data['photos'][0]['small_path'] if data['photos'][0]['small_path'] else None
+            isbn13 = data["isbn13"] if data["isbn13"] else None
+            book_publisher = data["supplier"] if data["supplier"] else None
+            publish_date = data["manufacturer_date"][:
+                                                     10] if data["manufacturer_date"] else None
             result = {
                 "id": id,
                 "source": "eslite",
                 "name": book_name,
                 "author": book_author,
                 "url": f"https://www.eslite.com/product/{id}",
-                "img": book_img,
+                "img": book_img if book_img else None,
                 "price": book_price,
                 "publisher": book_publisher,
                 "publish_date": publish_date,
-                "isbn13": isbn13 if isbn13 else None,
-            }
+                "isbn13": isbn13}
             print(result)
             return result
         except Exception as e:

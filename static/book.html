@@ -54,30 +54,31 @@
     </nav>
     <hr id="nav-title">
     <main id="book-bg">
-        <div id="data-title-container">
-            <h1><a class="book-data-name">點選購買</a></h1>
-            <a class="book-data-url">點選購買</a>
-            <a class="book-data-collect">加入收藏</a>
-            <a class="book-collected">已收藏</a>
 
-        </div>
         <section id="book-data-container">
+
+            <img class="book-data-img">
             <div class="book-data-info">
-                <img class="book-data-img">
                 <div>
-                    <p><strong>作 者：</strong><span class="book-data-author">author</span></p>
-                    <p><strong>出版商：</strong><span class="book-data-publisher">publish</span></p>
+                    <h1 class="book-data-name"></h1>
+                    <p><strong>作 者：&nbsp;&nbsp;&nbsp;</strong><span class="book-data-author">author</span></p>
+                    <p><strong>出版商：&nbsp;&nbsp;&nbsp;</strong><span class="book-data-publisher">publish</span></p>
                     <p><strong>出版日期：</strong><span class="book-data-publish-date">date</span></p>
-                    <p><strong>ISBN：</strong><span class="book-data-isbn">isbn</span></p>
-                    <p><strong>價格：</strong><span class="book-data-price">price</span> 元</p>
+                    <p><strong>ISBN：&nbsp;&nbsp;&nbsp;</strong><span class="book-data-isbn">isbn</span></p>
+                    <p><strong>價格：&nbsp;&nbsp;&nbsp;</strong><span class="book-data-price">price</span> 元</p>
                 </div>
+                <div class="url-container">
+                    <a class="book-data-url">點選購買</a>
+                    <a class="book-data-collect">加入收藏</a>
+                    <a class="book-collected">已收藏</a>
+                </div>
+
             </div>
-            <div id="chart-container">
-                <h1>價格變化</h1>
+            <div class="chart-container">
                 <canvas class="book-data-chart" id="BooksChart"></canvas>
             </div>
-            </div>
         </section>
+
     </main>
     <footer>
         <p>2025 © copyright</p>

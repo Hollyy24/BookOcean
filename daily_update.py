@@ -1,5 +1,5 @@
-from scrapscript import BooksRequest, EsliteRequest, SanminRequest
-from db_model import ScrapDB
+from Scrap.scrapscript import BooksRequest, EsliteRequest, SanminRequest
+from Scrap.db_model import ScrapDB
 from datetime import datetime, timezone, timedelta
 
 
@@ -26,6 +26,7 @@ def main():
         try:
             print(book['id'])
             temp = eslite.get_book_data(book['id'])
+            print(temp)
             eslite_update_data.append(temp)
         except Exception as e:
             print("誠品取得資料錯誤", e)
@@ -64,11 +65,11 @@ def main():
     print("books")
     for book in books_origin_data:
         try:
-            print(book['url'])
-            temp = books.get_book_data(book['id'], book['url'])
+            print(book)
+            temp = books.get_book_data(book['id'], book['URL'])
             books_update_data.append(temp)
         except Exception as e:
-            print("博客來更新資料錯誤", e)
+            print("博客取得資料錯誤", e)
             continue
     for book in books_update_data:
         try:

@@ -91,6 +91,9 @@ class DatabaseSystem:
                 sql = "SELECT * FROM sanmin WHERE id = %s"
             cursor.execute(sql, (id,))
             result = cursor.fetchone()
+            if result["last_updated"]:
+                result["last_updated"] = result["last_updated"].isoformat()[
+                    :10]
             return result
         except Exception as error:
             print(f'取得書本細節資料錯誤:{error}')

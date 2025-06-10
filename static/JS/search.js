@@ -22,66 +22,70 @@ class Controller {
                 alert("請輸入關鍵字");
             }
         })
-        this.view.searchLeft.addEventListener("click", async () => {
-            this.view.page -= 1;
-            if (this.view.page < 0) {
-                alert("最前頁")
-                this.view.page = 0
-                return
-            }
-            const search = this.model.getQueryparameter()
-            const data = {
-                "way": search.way,
-                "value": search.value
-            }
-            const result = await this.model.fetchData(data, (this.view.page * 4))
-            if (result == false) {
-                alert("發生錯誤，請重新查詢")
-                window.location.href = '/'
-            }
-            if (result["books"].length === 0) {
-                this.view.bookText.textContent = "查無相關資料";
-                return
-            }
-            const books = result["books"];
-            this.view.bookContainer.textContent = ""
-            for (let index in books) {
-                this.view.createContent(books[index]);
-            }
-            document.querySelectorAll(".collect-button").forEach(button => {
-                button.addEventListener("click", () => {
-                    const book = button.id;
-                    this.model.addCollection(book);
-                });
+        this.view.searchLeft.forEach((element) => {
+            element.addEventListener("click", async () => {
+                this.view.page -= 1;
+                if (this.view.page < 0) {
+                    alert("最前頁")
+                    this.view.page = 0
+                    return
+                }
+                const search = this.model.getQueryparameter()
+                const data = {
+                    "way": search.way,
+                    "value": search.value
+                }
+                const result = await this.model.fetchData(data, this.view.page * (12))
+                if (result == false) {
+                    alert("發生錯誤，請重新查詢")
+                    window.location.href = '/'
+                }
+                if (result["books"].length === 0) {
+                    this.view.bookText.textContent = "查無相關資料";
+                    return
+                }
+                const books = result["books"];
+                this.view.bookContainer.textContent = ""
+                for (let index in books) {
+                    this.view.createContent(books[index]);
+                }
+                document.querySelectorAll(".collect-button").forEach(button => {
+                    button.addEventListener("click", () => {
+                        const book = button.id;
+                        this.model.addCollection(book);
+                    });
+                })
             })
 
         })
-        this.view.searchRight.addEventListener("click", async () => {
-            this.view.page += 1;
-            const search = this.model.getQueryparameter()
-            const data = {
-                "way": search.way,
-                "value": search.value
-            }
-            const result = await this.model.fetchData(data, (this.view.page * 12) - 1)
-            if (result == false) {
-                alert("發生錯誤，請重新查詢")
-                window.location.href = '/'
-            }
-            if (result["books"].length === 0) {
-                alert("資料到底")
-                return
-            }
-            const books = result["books"];
-            this.view.bookContainer.textContent = ""
-            for (let index in books) {
-                this.view.createContent(books[index]);
-            }
-            document.querySelectorAll(".collect-button").forEach(button => {
-                button.addEventListener("click", () => {
-                    const book = button.id;
-                    this.model.addCollection(book);
-                });
+        this.view.searchRight.forEach((element) => {
+            element.addEventListener("click", async () => {
+                this.view.page += 1;
+                const search = this.model.getQueryparameter()
+                const data = {
+                    "way": search.way,
+                    "value": search.value
+                }
+                const result = await this.model.fetchData(data, (this.view.page * 12))
+                if (result == false) {
+                    alert("發生錯誤，請重新查詢")
+                    window.location.href = '/'
+                }
+                if (result["books"].length === 0) {
+                    alert("資料到底")
+                    return
+                }
+                const books = result["books"];
+                this.view.bookContainer.textContent = ""
+                for (let index in books) {
+                    this.view.createContent(books[index]);
+                }
+                document.querySelectorAll(".collect-button").forEach(button => {
+                    button.addEventListener("click", () => {
+                        const book = button.id;
+                        this.model.addCollection(book);
+                    });
+                })
             })
 
         })
@@ -237,8 +241,8 @@ class View {
         this.bookContainer = document.querySelector('.book-container');
 
         this.page = 0;
-        this.searchLeft = document.querySelector("#search-left");
-        this.searchRight = document.querySelector("#search-right");
+        this.searchLeft = document.querySelectorAll(".search-left");
+        this.searchRight = document.querySelectorAll(".search-right");
 
     }
 

@@ -172,7 +172,7 @@ class View {
                 label: '價格變動',
                 data: data_array,
                 borderColor: '#36A2EB',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                backgroundColor: 'rgba(54, 162, 235, 1)',
                 tension: 0.4,           // 曲線平滑度 (0 ~ 1)
                 fill: 'while',            // 是否填滿底色
                 pointStyle: 'rect',   // 點的樣式（circle、rect、triangle...）
@@ -186,20 +186,49 @@ class View {
             type: 'line',
             data: data,
             options: {
-                responsive: false,
+                responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#37647d'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '價格變動',
+                        color: '#37647d'
+                    },
+                    tooltip: {
+                        bodyColor: '#37647d',
+                        titleColor: '#e34244'
+                    }
+                },
                 scales: {
+                    x: {
+                        ticks: {
+                            color: '#37647d'
+                        },
+                        grid: {
+                            color: '#ccc'
+                        }
+                    },
                     y: {
                         ticks: {
+                            color: '#37647d',
                             stepSize: 1,
                             callback: function (value) {
-                                return Number.isInteger(value) ? value : ''; // 只顯示整數
+                                return Number.isInteger(value) ? value : '';
                             }
+                        },
+                        grid: {
+                            color: '#ccc'
                         }
                     }
                 }
             }
         };
+
         const myChart = new Chart(ctx, config);
     }
 }

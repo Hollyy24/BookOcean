@@ -2,7 +2,7 @@
     #book-result {
         position: relative;
         margin: 20px auto;
-        background-color: #c3cac3D2;
+        background-color: #bccdd6;
         padding: 20px;
     }
 
@@ -15,6 +15,14 @@
         align-items: center;
     }
 
+    #search-source {
+        position: relative;
+        width: 80%;
+        font-size: 16px;
+        margin: 10px auto;
+        text-align: center;
+        color: #205761;
+    }
 
 
     #book-text {
@@ -42,9 +50,12 @@
         margin: 50px auto;
         display: flex;
         flex-wrap: wrap;
-        width: 80%;
+        width: 100%;
         max-width: 1200px;
+        padding: 20px;
+        border-radius: 10px;
         justify-content: center;
+        background-color: #d9e3ec;
     }
 
     .book-item {
@@ -55,7 +66,7 @@
         margin: 20px auto;
         width: 200px;
         background-color: white;
-        border-radius: 0px 5px 5px 0px;
+        border-radius: 10px;
         box-shadow: 3px 5px 3px gray;
         border: 1px solid #ddd;
         justify-content: center;
@@ -157,6 +168,63 @@
         content: " ❤ ";
     }
 
+    .pagination-container {
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .search-left,
+    .search-right {
+        background-color: #bccdd6;
+    }
+
+    .search-left:hover,
+    .search-right:hover {
+        opacity: 0.5;
+    }
+
+    .search-left {
+        padding: 10px;
+        position: relative;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .search-left::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -8px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-right: 8px solid black;
+        /* 三角形的顏色 */
+    }
+
+    .search-right {
+        padding: 10px;
+        position: relative;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .search-right::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -8px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-left: 8px solid black;
+        /* 三角形的顏色 */
+    }
 
 }
 
