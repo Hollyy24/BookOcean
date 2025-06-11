@@ -1,4 +1,5 @@
 from mysql.connector import pooling
+from .db_pool import cnxpool
 import os
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
@@ -7,20 +8,9 @@ load_dotenv()
 
 
 class CollectionDatabase:
+
     def __init__(self):
-
-        dbconfig = {
-            "host": os.getenv("MYSQL_HOST"),
-            "user": os.getenv("MYSQL_USER"),
-            "password": os.getenv("MYSQL_PASSWORD"),
-            "database": "BooksPrice"
-        }
-
-        self.cnxpool = pooling.MySQLConnectionPool(
-            pool_name="mypool",
-            pool_size=5,
-            **dbconfig
-        )
+        self.cnxpool = cnxpool
 
     def add_collect_book(self, user_id, data):
         cnx = self.cnxpool.get_connection()

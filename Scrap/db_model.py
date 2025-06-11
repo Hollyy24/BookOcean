@@ -1,4 +1,5 @@
 from mysql.connector import pooling
+from Model.db_pool import cnxpool
 from datetime import datetime, timezone, timedelta
 import os
 from dotenv import load_dotenv
@@ -9,18 +10,7 @@ load_dotenv()
 
 class ScrapDB:
     def __init__(self):
-        dbconfig = {
-            "host": os.getenv("MYSQL_HOST"),
-            "user": os.getenv("MYSQL_USER"),
-            "password": os.getenv("MYSQL_PASSWORD"),
-            "database": "BooksPrice"
-        }
-
-        self.cnxpool = pooling.MySQLConnectionPool(
-            pool_name="mypool",
-            pool_size=20,
-            **dbconfig
-        )
+        self.cnxpool = cnxpool
 
     def get_all_url(self, source):
         print("get all id")
