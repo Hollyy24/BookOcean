@@ -197,6 +197,7 @@ class ScrapDB:
         print("update allbooks")
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor()
+
         try:
             sql = """
                 UPDATE allbooks
@@ -208,6 +209,27 @@ class ScrapDB:
             return True
         except Exception as e:
             print("更新 allbooks 資料錯誤：", e)
+        finally:
+            cnx.close()
+
+    def update_lasted_time(self, source, id):
+        print("update last_updated")
+        cnx = self.cnxpool.get_connection()
+        cursor = cnx.cursor()
+        taiwan_tz = timezone(timedelta(hours=8))
+        now = datetime.now(taiwan_tz).strftime("%Y-%m-%d")
+        try:
+            if source == "books":
+                sql = "UPDATE books SET last_updated = %s WHERE id = %s "
+            elif source == "eslite":
+                sql = "UPDATE eslite SET last_updated = %s WHERE id = %s "
+            elif source == "sanmin":
+                sql = "UPDATE sanmin SET last_updated = %s WHERE id = %s "
+            cursor.execute(sql, (now, id,))
+            cnx.commit()
+            return True
+        except Exception as e:
+            print("更新 last_updated 資料錯誤：", e)
         finally:
             cnx.close()
 

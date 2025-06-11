@@ -149,9 +149,9 @@ class View {
         this.bookAuthor.textContent = data.author;
         this.bookImg.src = data.img;
         this.bookPrice.textContent = data.price;
-        this.bookPublishDate.textContent = data.publish_date;
-        this.bookPublisher.textContent = data.publisher;
-        this.bookIsbn.textContent = data.ISBN;
+        this.bookPublishDate.textContent = data.publish_date ? data.publish_date : "----";
+        this.bookPublisher.textContent = data.publisher ? data.publisher : "----";
+        this.bookIsbn.textContent = data.ISBN ? data.ISBN : "----";
         this.bookUrl.href = data.URL;
         this.bookUrl.target = "_blank";
         this.bookCollectButton.id = data.source + "/" + data.id

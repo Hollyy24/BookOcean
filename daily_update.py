@@ -26,8 +26,11 @@ def main():
         try:
             print(book['id'])
             temp = eslite.get_book_data(book['id'])
-            print(temp)
-            eslite_update_data.append(temp)
+            if temp:
+                print("temp")
+                eslite_update_data.append(temp)
+            else:
+                db.update_lasted_time('eslite', book['id'])
         except Exception as e:
             print("誠品取得資料錯誤", e)
             continue
@@ -47,9 +50,15 @@ def main():
         try:
             print(book)
             temp = sanmin.get_book_data(book['id'])
-            sanmin_update_data.append(temp)
+            if temp:
+                print("temp")
+                sanmin_update_data.append(temp)
+            else:
+                print("wrong")
+                db.update_lasted_time('sanmin', book['id'])
         except Exception as e:
             print("三民取得資料錯誤", e)
+
             continue
     for book in sanmin_update_data:
         try:
@@ -67,7 +76,13 @@ def main():
         try:
             print(book)
             temp = books.get_book_data(book['id'], book['URL'])
-            books_update_data.append(temp)
+            if temp:
+                print("temp")
+                books_update_data.append(temp)
+            else:
+                print("wrong")
+                db.update_lasted_time('books', book['id'])
+
         except Exception as e:
             print("博客取得資料錯誤", e)
             continue
