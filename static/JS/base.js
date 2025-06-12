@@ -108,7 +108,7 @@ class BaseController {
         let count = 0;
         if (!notification) { return }
         this.view.notificationList.textContent = "";
-        this.view.notification.style.width = "300px"
+        this.view.notificationList.style.width = "300px"
         for (let data of notification) {
             if (data.is_read == false) { count += 1 }
             this.view.renderNotificaiton(data);
@@ -199,14 +199,13 @@ class BaseModel {
                 },
             })
             const result = await response.json();
-
             if (result["success"] == false) {
                 return false
             };
             if (result["data"] == null) {
                 return false
             };
-            return notification
+            return result['data']
         } catch (error) {
             return false
         }
@@ -315,7 +314,7 @@ class BaseView {
 
         item.appendChild(content)
         item.appendChild(time);
-        this.notificationContainer.append(item)
+        this.notificationList.append(item)
     }
 }
 

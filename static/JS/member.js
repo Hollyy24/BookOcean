@@ -113,7 +113,7 @@ class Controller {
         if (!notification) { return }
         if (notification.length != 0) {
             this.view.notificationList.textContent = "";
-            this.view.notification.style.width = "300px"
+            this.view.notificationList.style.width = "300px"
         }
         for (let data of notification) {
             if (data.is_read == false) { count += 1 }
@@ -372,7 +372,7 @@ class View {
 
         item.appendChild(content)
         item.appendChild(time);
-        this.notificationLeave.append(item)
+        this.notificationList.append(item)
     }
 }
 
