@@ -106,10 +106,8 @@ class BaseController {
 
         const notification = await this.model.fetchNotification()
         let count = 0;
-        if (!notification) {
-            this.notificationContainer.textContent = "無通知"
-            return
-        }
+        if (!notification) { return }
+        this.view.notificationContainer.textContent = "";
         this.view.notificationList.style.width = "300px"
         for (let data of notification) {
             if (data.is_read == false) { count += 1 }
@@ -204,9 +202,6 @@ class BaseModel {
             if (result["success"] == false) {
                 return false
             };
-            if (result["data"] == null) {
-                return false
-            };
             return result['data']
         } catch (error) {
             return false
@@ -249,11 +244,11 @@ class BaseView {
         this.changeSignin = document.querySelector("#change-signin");
         this.changeLogin = document.querySelector("#change-login");
 
-        this.notificationIcon = document.querySelector("#notification-icon");
-        this.notificationNumber = document.querySelector("#notification-number");
-        this.notificationList = document.querySelector("#notification-list");
-        this.notificationContainer = document.querySelector("#notification-container");
-        this.notificationLeave = document.querySelector("#notification-leave");
+        this.notificationIcon = document.querySelector(".notification-icon");
+        this.notificationNumber = document.querySelector(".notification-number");
+        this.notificationList = document.querySelector(".notification-list");
+        this.notificationContainer = document.querySelector(".notification-container");
+        this.notificationLeave = document.querySelector(".notification-leave");
     }
     showLogin() {
         this.loginForm.style.display = "block";

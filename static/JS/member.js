@@ -110,15 +110,13 @@ class Controller {
 
         const notification = await this.model.fetchNotification()
         let count = 0;
-        if (!notification) {
-            this.notificationContainer.textContent = "無通知"
-            return
-        }
+        if (!notification) { return }
         if (notification.length != 0) {
             this.view.notificationList.style.width = "300px"
         }
         for (let data of notification) {
             if (data.is_read == false) { count += 1 }
+            this.view.notificationContainer.textContent = "";
             this.view.renderNotificaiton(data);
         }
         this.view.showNotification(count);
@@ -245,7 +243,7 @@ class Model {
             const notification = result["data"];
             return notification
         } catch (error) {
-            return
+            return false
         }
     }
 }
@@ -270,11 +268,11 @@ class View {
         this.uploadPassword = document.querySelector("#update-form-password")
         this.uploadButton = document.querySelector("#update-form-button")
 
-        this.notificationIcon = document.querySelector("#notification-icon");
-        this.notificationNumber = document.querySelector("#notification-number");
-        this.notificationList = document.querySelector("#notification-list");
-        this.notificationContainer = document.querySelector("#notification-container");
-        this.notificationLeave = document.querySelector("#notification-leave");
+        this.notificationIcon = document.querySelector(".notification-icon");
+        this.notificationNumber = document.querySelector(".notification-number");
+        this.notificationList = document.querySelector(".notification-list");
+        this.notificationContainer = document.querySelector(".notification-container");
+        this.notificationLeave = document.querySelector(".notification-leave");
 
     }
 
