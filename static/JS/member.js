@@ -112,7 +112,6 @@ class Controller {
         let count = 0;
         if (!notification) { return }
         if (notification.length != 0) {
-            this.view.notificationList.textContent = "";
             this.view.notificationList.style.width = "300px"
         }
         for (let data of notification) {
