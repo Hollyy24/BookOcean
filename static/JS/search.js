@@ -49,6 +49,13 @@ class Controller {
             for (let index in books) {
                 this.view.createContent(books[index]);
             }
+            document.querySelectorAll(".book-info").forEach(element => {
+                element.addEventListener("click", () => {
+                    const source = element.id.split("/")[0];
+                    const id = element.id.split("/")[1];
+                    window.location.href = `/book?source=${source}&id=${id}`;
+                });
+            });
             document.querySelectorAll(".collect-button").forEach(button => {
                 button.addEventListener("click", () => {
                     const book = button.id;
@@ -78,6 +85,13 @@ class Controller {
             for (let index in books) {
                 this.view.createContent(books[index]);
             }
+            document.querySelectorAll(".book-info").forEach(element => {
+                element.addEventListener("click", () => {
+                    const source = element.id.split("/")[0];
+                    const id = element.id.split("/")[1];
+                    window.location.href = `/book?source=${source}&id=${id}`;
+                });
+            });
             document.querySelectorAll(".collect-button").forEach(button => {
                 button.addEventListener("click", () => {
                     const book = button.id;
