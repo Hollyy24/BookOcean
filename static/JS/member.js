@@ -110,7 +110,10 @@ class Controller {
 
         const notification = await this.model.fetchNotification()
         let count = 0;
-        if (!notification) { return }
+        if (!notification) {
+            this.notificationContainer.textContent = "無通知"
+            return
+        }
         if (notification.length != 0) {
             this.view.notificationList.style.width = "300px"
         }
