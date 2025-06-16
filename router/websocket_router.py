@@ -29,7 +29,6 @@ async def websocket_online(websocket: WebSocket, temp_token: str):
 
 async def broadcast_online_count():
     count = len(user_connections)
-    print(f"[Server] 在線人數：{count}")
     for ws_set in user_connections.values():
         for ws in ws_set:
             try:
