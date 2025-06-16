@@ -13,6 +13,9 @@ class Controller {
 
 
         this.init()
+
+
+
         window.addEventListener("loginSuccess", async (e) => {
             document.querySelector("#nav-center").style.display = "none";
             document.querySelector("#nav-right").style.display = "flex";
@@ -180,7 +183,6 @@ class View {
         this.searchButton = document.querySelector(".search-button");
         this.leftButton = document.querySelector('.left-button');
         this.rightButton = document.querySelector('.right-button');
-
     }
 
     createContent(data, collected) {

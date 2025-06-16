@@ -11,7 +11,28 @@ class BaseController {
         this.model = model;
         this.view = view;
 
-        this.init()
+        this.channel = new BroadcastChannel("bookocean_online_channel");
+        this.ws = null;
+        this.connected = false;
+        this.shouldConnect = true;
+
+        this.tempToken = this.model.getTempToken();
+
+        this.init();
+        this.setupBroadcastChannel();
+        this.connectWebSocket();
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible" && !this.connected) {
+                setTimeout(this.connectWebSocket, 200);
+            }
+        });
+
+        window.addEventListener("beforeunload", () => {
+            if (this.connected) {
+                this.channel.postMessage("disconnected");
+            }
+        });
 
         this.view.homePage.addEventListener("click", () => {
             window.location.href = "/"
@@ -114,6 +135,43 @@ class BaseController {
             this.view.renderNotificaiton(data);
         }
         this.view.showNotification(count);
+    }
+    setupBroadcastChannel() {
+        this.channel.onmessage = (msg) => {
+            if (msg.data === "already-connected") {
+                this.shouldConnect = false;
+                if (this.ws && this.connected) this.ws.close();
+            }
+            if (msg.data === "disconnected") {
+                setTimeout(() => {
+                    if (!this.connected) this.connectWebSocket();
+                }, 200);
+            }
+            if (msg.data.type === "update-count") {
+                this.view.updateOnlineCount(msg.data.count);
+            }
+        };
+    }
+    connectWebSocket() {
+        if (!this.shouldConnect || this.connected) return;
+
+        this.ws = new WebSocket(`ws://${location.host}/ws/${this.tempToken}`);
+
+        this.ws.onopen = () => {
+            this.connected = true;
+            this.channel.postMessage("already-connected");
+        };
+
+        this.ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            this.view.updateOnlineCount(data.count);
+            this.channel.postMessage({ type: "update-count", count: data.count });
+        };
+
+        this.ws.onclose = () => {
+            this.connected = false;
+            this.channel.postMessage("disconnected");
+        };
     }
 }
 
@@ -221,7 +279,14 @@ class BaseModel {
         });
         window.dispatchEvent(event);
     }
-
+    getTempToken() {
+        let tempToken = localStorage.getItem("tempToken");
+        if (!tempToken) {
+            tempToken = crypto.randomUUID;
+            localStorage.setItem("tempToken", tempToken);
+        }
+        return tempToken;
+    }
 }
 
 
@@ -312,6 +377,12 @@ class BaseView {
         item.appendChild(content)
         item.appendChild(time);
         this.notificationList.append(item)
+    }
+    updateOnlineCount(count) {
+        const counter = document.getElementById("online-count");
+        if (counter) {
+            counter.textContent = count;
+        }
     }
 }
 

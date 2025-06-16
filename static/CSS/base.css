@@ -1,9 +1,9 @@
 body {
     margin: 0px;
-    padding: 0px;
     font-family: "Noto Sans TC", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+    padding-bottom: 60px
 }
 
 nav {
@@ -253,15 +253,24 @@ nav img {
 }
 
 footer {
-    display: fixed;
+    position: fixed;
+    display: block;
     bottom: 0px;
-    height: 30px;
-    width: 100vw;
+    width: 100%;
     background-color: #37647d;
     color: white;
     text-align: center;
+    font-size: 10px;
+    z-index: 1000;
 }
 
 hr {
     margin: 0px;
+}
+
+
+#online-container {
+    text-align: center;
+    margin: 10px auto;
+    color: #f9f9f9
 }
