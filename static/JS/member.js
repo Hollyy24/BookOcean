@@ -165,7 +165,7 @@ class Controller {
     connectWebSocket() {
         if (!this.shouldConnect || this.connected) return;
 
-        this.ws = new WebSocket(`ws://${location.host}/ws/${this.tempToken}`);
+        this.ws = new WebSocket(`wss://${location.host}/ws/${this.tempToken}`);
 
         this.ws.onopen = () => {
             this.connected = true;
