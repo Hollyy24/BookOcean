@@ -162,6 +162,7 @@ class BaseController {
         };
 
         this.ws.onmessage = (event) => {
+            console.log("[Client] 收到訊息", event.data)
             const data = JSON.parse(event.data);
             this.view.updateOnlineCount(data.count);
             this.channel.postMessage({ type: "update-count", count: data.count });
@@ -281,7 +282,7 @@ class BaseModel {
     getTempToken() {
         let tempToken = localStorage.getItem("tempToken");
         if (!tempToken) {
-            tempToken = crypto.randomUUID;
+            tempToken = crypto.randomUUID();
             localStorage.setItem("tempToken", tempToken);
         }
         return tempToken;

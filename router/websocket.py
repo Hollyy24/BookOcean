@@ -29,9 +29,10 @@ async def websocket_online(websocket: WebSocket, temp_token: str):
 
 async def broadcast_online_count():
     count = len(user_connections)
+    print(f"[Server] 在線人數：{count}")
     for ws_set in user_connections.values():
         for ws in ws_set:
             try:
                 await ws.send_json({"count": count})
-            except:
-                pass
+            except Exception as e:
+                print(f"[ERROR] 推播失敗：{e}")

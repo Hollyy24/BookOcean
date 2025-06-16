@@ -308,7 +308,7 @@ class Model {
     getTempToken() {
         let tempToken = localStorage.getItem("tempToken");
         if (!tempToken) {
-            tempToken = crypto.randomUUID;
+            tempToken = crypto.randomUUID();
             localStorage.setItem("tempToken", tempToken);
         }
         return tempToken;
