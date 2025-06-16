@@ -2,13 +2,13 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from typing import Dict, Set
 
 
-router = APIRouter()
+websocket_router = APIRouter()
 
 
 user_connections: Dict[str, Set[WebSocket]] = {}
 
 
-@router.websocket("/ws/{temp_token}")
+@websocket_router.websocket("/ws/{temp_token}")
 async def websocket_online(websocket: WebSocket, temp_token: str):
     await websocket.accept()
     if temp_token not in user_connections:
