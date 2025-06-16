@@ -154,9 +154,9 @@ class BaseController {
     }
     connectWebSocket() {
         if (!this.shouldConnect || this.connected) return;
-
-        this.ws = new WebSocket(`wss://${location.host}/ws/${this.tempToken}`);
-
+        const protocol = location.protocol === "https:" ? "wss" : "ws";
+        this.ws = new WebSocket(`${protocol}://${location.host}/ws/${this.tempToken}`);
+        console.log(this.ws)
         this.ws.onopen = () => {
             this.connected = true;
             this.channel.postMessage("already-connected");
