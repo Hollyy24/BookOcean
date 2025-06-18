@@ -330,7 +330,7 @@ class ScrapDB:
             taiwan_tz = timezone(timedelta(hours=8))
             time = datetime.now(taiwan_tz).strftime("%Y-%m-%d")
             sql = """
-            INSERT INTO Notification 
+            INSERT INTO notification 
             (member_id,book_id,book_source,old_price,new_price,is_read,time)
             VALUES
             (%s,%s,%s,%s,%s,%s,%s)
