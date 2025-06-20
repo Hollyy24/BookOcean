@@ -30,7 +30,7 @@ class BookDetail(BaseModel):
 
 
 @book_router.get("/api/booksdata")
-async def getbook():
+async def get_book():
     try:
         books = search.get_all_books()
         book_count = len(books)-10
@@ -44,7 +44,7 @@ async def getbook():
 
 
 @book_router.post("/api/booksdata")
-async def getData(book: BookValue):
+async def get_books(book: BookValue):
     search = DatabaseSystem()
     try:
         if book.way == "name":
@@ -60,7 +60,7 @@ async def getData(book: BookValue):
 
 
 @book_router.post("/api/booksdetail")
-async def getData(book: BookDetail):
+async def get_detaildata(book: BookDetail):
     search = DatabaseSystem()
     try:
         data = search.get_book_detail(book.source, book.id)
