@@ -41,15 +41,15 @@ class BaseController {
 
         this.view.signin.addEventListener("click", () => {
             this.view.dialogBackground.style.display = "block";
-            this.view.closeLogin()
+            this.view.closeSignup()
             this.view.showSignin()
 
         })
 
-        this.view.login.addEventListener("click", () => {
+        this.view.signup.addEventListener("click", () => {
             this.view.dialogBackground.style.display = "block";
             this.view.closeSignin()
-            this.view.showLogin()
+            this.view.showSignup()
         })
 
         this.view.dialogBackground.addEventListener("click", () => {
@@ -57,19 +57,19 @@ class BaseController {
 
         })
 
-        this.view.changeLogin.addEventListener("click", () => {
+        this.view.changeSignup.addEventListener("click", () => {
             this.view.dialogBackground.style.display = "block";
             this.view.closeSignin()
-            this.view.showLogin()
+            this.view.showSignup()
         })
 
         this.view.changeSignin.addEventListener("click", () => {
             this.view.dialogBackground.style.display = "block";
-            this.view.closeLogin()
+            this.view.closeSignup()
             this.view.showSignin()
         })
 
-        this.view.loginForm.addEventListener("submit", (event) => {
+        this.view.signupForm.addEventListener("submit", (event) => {
             event.preventDefault()
             let name = document.querySelector('#log-in-name').value
             let email = document.querySelector('#log-in-email').value
@@ -179,7 +179,7 @@ class BaseModel {
         const token = localStorage.getItem('token')
         if (!token) { return false }
         try {
-            const response = await fetch('/api/userSignin', {
+            const response = await fetch('/api/user/login', {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -197,7 +197,7 @@ class BaseModel {
 
     async userSignin(userData) {
         try {
-            const response = await fetch('/api/userSignin', {
+            const response = await fetch('/api/user/login', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -225,7 +225,7 @@ class BaseModel {
 
     async userLogin(userData) {
         try {
-            const response = await fetch('/api/userLogin', {
+            const response = await fetch('/api/user/signup', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -265,6 +265,24 @@ class BaseModel {
         }
     }
 
+    async removeNotification(notification_id) {
+        try {
+            const response = await fetch(`/api/notification/${notification_id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            })
+            const result = await response.json();
+            if (result["success"] == false) {
+                return false
+            };
+            return true
+        } catch (error) {
+            return false
+        }
+    }
+
 
     updateUIAfterSignin() {
         document.querySelector("#dialog-background").style.display = "none";
@@ -294,19 +312,19 @@ class BaseModel {
 class BaseView {
     constructor() {
         this.homePage = document.querySelector('#nav-title');
-        this.login = document.querySelector('#login');
+        this.signup = document.querySelector('#signup');
         this.signin = document.querySelector('#signin');
         this.navCenter = document.querySelector("#nav-center");
         this.navRight = document.querySelector("#nav-right");
 
         this.memberCenter = document.querySelector("#member-center");
 
-        this.loginForm = document.querySelector("#log-in-form");
+        this.signupForm = document.querySelector("#sign-up-form");
         this.siginForm = document.querySelector("#sign-in-form");
         this.dialogBackground = document.querySelector('#dialog-background');
 
         this.changeSignin = document.querySelector("#change-signin");
-        this.changeLogin = document.querySelector("#change-login");
+        this.changeSignup = document.querySelector("#change-signup");
 
         this.notificationIcon = document.querySelector(".notification-icon");
         this.notificationNumber = document.querySelector(".notification-number");
@@ -314,8 +332,8 @@ class BaseView {
         this.notificationContainer = document.querySelector(".notification-container");
         this.notificationLeave = document.querySelector(".notification-leave");
     }
-    showLogin() {
-        this.loginForm.style.display = "block";
+    showSignup() {
+        this.signupForm.style.display = "block";
     }
 
     showSignin() {
@@ -325,13 +343,13 @@ class BaseView {
     closeSignin() {
         this.siginForm.style.display = "none";
     }
-    closeLogin() {
-        this.loginForm.style.display = "none";
+    closeSignup() {
+        this.signupForm.style.display = "none";
     }
 
     hideAllForms() {
         this.closeSignin();
-        this.closeLogin();
+        this.closeSignup();
         this.dialogBackground.style.display = "none";
     }
 
@@ -345,11 +363,12 @@ class BaseView {
         let item = document.createElement("div");
         let content = document.createElement("p");
         let time = document.createElement("p");
+        let deleteButton = document.createElement("div");
 
         item.className = "notification-item";
         content.className = "notification-content";
         time.className = "notification-time";
-
+        deleteButton.className = "notification-delete";
 
         let text = `
             你收藏的書本 
@@ -359,11 +378,14 @@ class BaseView {
             `;
         content.textContent = text;
         time.textContent = data.time;
+        deleteButton.textContent = " ✖ "
+        deleteButton.dataset.id = data.id
+
         if (data.is_read == false) {
             item.style.opacity = "0.8";
         }
 
-        item.addEventListener("click", async () => {
+        content.addEventListener("click", async () => {
             const response = await fetch(`/api/notification/${data.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -373,7 +395,17 @@ class BaseView {
             if (result["success"] == true) { window.location.href = `/book?source=${data.book_source}&id=${data.book_id}`; }
         });
 
-        item.appendChild(content)
+        deleteButton.addEventListener("click", async () => {
+            const response = await fetch(`/api/notification/${data.id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            });
+            const result = await response.json()
+            if (result["success"] == true) { window.location.reload(); }
+        });
+
+        item.appendChild(deleteButton);
+        item.appendChild(content);
         item.appendChild(time);
         this.notificationList.append(item)
     }

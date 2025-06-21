@@ -1,10 +1,5 @@
-from mysql.connector import pooling
 from .db_pool import cnxpool
-import os
 from datetime import datetime, timezone, timedelta
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 class CollectionDatabase:
@@ -56,8 +51,6 @@ class CollectionDatabase:
             """
             cursor.execute(sql, (member_id,))
             data = cursor.fetchall()
-            if data is None:
-                return False
             return data
         except Exception as error:
             print(f'error:{error}')
@@ -65,12 +58,10 @@ class CollectionDatabase:
         finally:
             cnx.close()
 
-    def delete_collect_book(self, member_id, data):
+    def delete_collect_book(self, member_id, book_id, book_source):
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
         try:
-            book_id = data.book_id
-            book_source = data.book_source
             sql = "DELETE FROM collection WHERE member_id=%s AND book_id = %s AND book_source = %s"
             cursor.execute(sql, (member_id, book_id, book_source,))
             cnx.commit()

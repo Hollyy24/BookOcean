@@ -73,7 +73,7 @@ class Model {
         if (!status) { return false }
         const compareData = this.getQueryparameter()
         try {
-            const response = await fetch('/api/collect', {
+            const response = await fetch('/api/user/collections', {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -103,7 +103,7 @@ class Model {
             "book_id": book.split("/")[1]
         }
         try {
-            const response = await fetch('/api/collect', {
+            const response = await fetch('/api/user/collections', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

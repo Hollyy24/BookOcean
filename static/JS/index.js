@@ -107,7 +107,7 @@ class Model {
                 },
             });
             const data = await response.json();
-            return data;
+            return data['books'];
         } catch (error) {
             console.error("Fetch error:", error);
             return false
@@ -116,7 +116,7 @@ class Model {
     async Collected(status) {
         if (!status) { return false }
         try {
-            const response = await fetch('/api/collect', {
+            const response = await fetch('/api/user/collections', {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -146,7 +146,7 @@ class Model {
             "book_id": book.split("/")[1]
         }
         try {
-            const response = await fetch('/api/collect', {
+            const response = await fetch('/api/user/collections', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

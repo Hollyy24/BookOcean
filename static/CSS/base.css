@@ -49,7 +49,7 @@ nav img {
 
 
 
-#login,
+#signup,
 #signin,
 #logout {
     margin: 5px;
@@ -133,12 +133,30 @@ nav img {
 .notification-item {
     position: relative;
     border: 1px solid #819aa8;
+}
+
+.notification-delete {
+    margin-right: 5px;
+    font-size: 10px;
+    text-align: right;
+    color: #819aa8;
+    cursor: pointer;
+}
+
+.notification-delete:hover {
+    color: "red";
     cursor: pointer;
 }
 
 .notification-content {
     padding: 10px;
     white-space: pre-line;
+    cursor: pointer;
+}
+
+.notification-content:hover {
+    transform: scale(1.05);
+    cursor: pointer;
 }
 
 .notification-time {
@@ -147,7 +165,7 @@ nav img {
     color: #819aa8;
 }
 
-#login::before,
+#signup::before,
 #signin::before,
 #logout::before {
     content: "   ";
@@ -155,7 +173,7 @@ nav img {
 }
 
 
-#login:hover,
+#signup:hover,
 #signin:hover,
 #member-center:hover,
 #logout:hover {
@@ -177,7 +195,7 @@ nav img {
 }
 
 
-#log-in-form,
+#sign-up-form,
 #sign-in-form {
     display: none;
     color: #205781;
@@ -198,7 +216,7 @@ nav img {
 
 
 #sign-in-form h2,
-#log-in-form h2 {
+#sign-up-form h2 {
     background-color: #37647d;
     border-radius: 19px 19px 0px 0px;
     padding: 11px;
@@ -208,12 +226,12 @@ nav img {
 }
 
 #sign-in-form label,
-#log-in-form label {
+#sign-up-form label {
     color: #1D3C50;
 }
 
 #sign-in-form input,
-#log-in-form input {
+#sign-up-form input {
     width: 200px;
     height: 30px;
     margin: 10px;
@@ -221,7 +239,7 @@ nav img {
 }
 
 #sign-in-button,
-#log-in-button {
+#sign-up-button {
     width: 100px;
     padding: 10px;
     margin: 10px;
@@ -239,14 +257,14 @@ nav img {
 }
 
 
-#change-login,
+#change-signup,
 #change-signin {
     color: #37647d;
     cursor: pointer;
     font-size: 16px;
 }
 
-#change-login:hover,
+#change-signup:hover,
 #change-signin:hover {
     opacity: 0.8;
     cursor: pointer;

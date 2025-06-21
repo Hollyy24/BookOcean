@@ -1,10 +1,8 @@
 from mysql.connector import pooling
 from .db_pool import cnxpool
-import os
 from dotenv import load_dotenv
 import jieba
-
-load_dotenv()
+import random
 
 
 class DatabaseSystem:
@@ -24,7 +22,12 @@ class DatabaseSystem:
                 """
             cursor.execute(sql,)
             result = cursor.fetchall()
-            return result
+            book_count = len(result)-10
+            number = []
+            for i in range(10):
+                number.append(random.randint(0, book_count))
+            random_result = [result[i] for i in number]
+            return random_result
         except Exception as error:
             print(f'error:{error}')
         finally:
@@ -47,6 +50,7 @@ class DatabaseSystem:
             return result
         except Exception as error:
             print(f'error:{error}')
+            return False
         finally:
             cnx.close()
 
@@ -65,6 +69,7 @@ class DatabaseSystem:
             return result
         except Exception as error:
             print(f'error:{error}')
+            return False
         finally:
             cnx.close()
 
@@ -102,6 +107,8 @@ class DatabaseSystem:
                 sql = "SELECT * FROM  sanmin_price_history WHERE book_id = %s"
             cursor.execute(sql, (id,))
             result = cursor.fetchall()
+            for item in result:
+                item["time"] = item["time"].isoformat() if item['time'] else None
             return result
         except Exception as error:
             print(f'error:{error}')

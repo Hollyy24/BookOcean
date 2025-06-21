@@ -120,7 +120,6 @@ class Controller {
         document.querySelectorAll('.collect-delete').forEach((element) => {
             element.addEventListener("click", async () => {
                 const result = await this.model.delteCollection(element.dataset.id, element.dataset.source)
-                console.log(result)
                 if (result["success"] == true) {
                     alert("刪除成功")
                     window.location.reload()
@@ -189,7 +188,7 @@ class Model {
         const token = localStorage.getItem('token')
         if (!token) { return false }
         try {
-            const response = await fetch('/api/userSignin', {
+            const response = await fetch('/api/user/profile', {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -207,7 +206,7 @@ class Model {
     async getCollection() {
         try {
             let token = localStorage.getItem('token')
-            const response = await fetch('/api/collect', {
+            const response = await fetch('/api/user/collections', {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -224,16 +223,12 @@ class Model {
     async delteCollection(id, source) {
         const token = localStorage.getItem('token')
         try {
-            const response = await fetch('/api/collect', {
+            const response = await fetch(`/api/user/collections/${source}/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    book_id: id,
-                    book_source: source
-                })
+                }
             });
             const result = await response.json();
             return result;
@@ -245,7 +240,7 @@ class Model {
     async uploadMemberdata(name, password) {
         const token = localStorage.getItem('token')
         try {
-            const response = await fetch('/api/userSignin', {
+            const response = await fetch('/api/user/profile', {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -268,7 +263,7 @@ class Model {
         const formData = new FormData();
         formData.append("file", file);
         const response = await fetch(
-            "/api/uploads", {
+            "/api/user/uploads", {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -311,6 +306,23 @@ class Model {
             localStorage.setItem("tempToken", tempToken);
         }
         return tempToken;
+    }
+    async removeNotification(notification_id) {
+        try {
+            const response = await fetch(`/api/notification/${notification_id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            })
+            const result = await response.json();
+            if (result["success"] == false) {
+                return false
+            };
+            return true
+        } catch (error) {
+            return false
+        }
     }
 }
 
@@ -408,11 +420,11 @@ class View {
         let item = document.createElement("div");
         let content = document.createElement("p");
         let time = document.createElement("p");
-
+        let deleteButton = document.createElement("div");
         item.className = "notification-item";
         content.className = "notification-content";
         time.className = "notification-time";
-
+        deleteButton.className = "notification-delete";
 
         let text = `
             你收藏的書本 
@@ -426,7 +438,7 @@ class View {
             item.style.opacity = "0.8";
         }
 
-        item.addEventListener("click", async () => {
+        content.addEventListener("click", async () => {
             const response = await fetch(`/api/notification/${data.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -436,7 +448,17 @@ class View {
             if (result["success"] == true) { window.location.href = `/book?source=${data.book_source}&id=${data.book_id}`; }
         });
 
-        item.appendChild(content)
+        deleteButton.addEventListener("click", async () => {
+            const response = await fetch(`/api/notification/${data.id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            });
+            const result = await response.json()
+            if (result["success"] == true) { window.location.reload(); }
+        });
+
+        item.appendChild(deleteButton);
+        item.appendChild(content);
         item.appendChild(time);
         this.notificationList.append(item)
     }

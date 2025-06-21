@@ -16,15 +16,23 @@ async def notify(authorization: str = Header(None)):
     id = member.check_user_status(token)['id']
     result = notification.get_notification(id)
     if result is False:
-        return JSONResponse(status_code=500, content={"success": False, "message": "Internal error"})
+        return JSONResponse(status_code=500, content={"success": False, "message": "取得通知發生錯誤"})
     if result is None:
         return JSONResponse(status_code=200, content={"success": True, "data": None})
-    for item in result:
-        item['time'] = item['time'].isoformat() if item['time'] else None
     return JSONResponse(status_code=200, content={"success": True, "data": result})
 
 
 @notification_router.put("/api/notification/{notification_id}")
 def update_notification(notification_id: int):
     result = notification.update_notification(notification_id)
+    if result is False:
+        return JSONResponse(status_code=500, content={"success": False, "message": "新增通知發生錯誤"})
+    return JSONResponse(status_code=200, content={"success": result})
+
+
+@notification_router.delete("/api/notification/{notification_id}")
+def remove_notification(notification_id: int):
+    result = notification.delete_notification(notification_id)
+    if result is False:
+        return JSONResponse(status_code=500, content={"success": False, "message": "刪除通知發生錯誤"})
     return JSONResponse(status_code=200, content={"success": result})

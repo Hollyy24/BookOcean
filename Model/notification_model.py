@@ -25,8 +25,11 @@ class NotificationDatabase:
             """
             cursor.execute(sql, (id,))
             result = cursor.fetchall()
+            result.reverse()
             if len(result) == 0:
                 return None
+            for item in result:
+                item['time'] = item['time'].isoformat() if item['time'] else None
             return result
         except Exception as error:
             print(f"錯誤：{error}")
@@ -40,6 +43,20 @@ class NotificationDatabase:
         try:
             sql = "UPDATE notification SET is_read= %s WHERE  id = %s "
             cursor.execute(sql, (True, id,))
+            cnx.commit()
+            return True
+        except Exception as error:
+            print(f"錯誤：{error}")
+            return False
+        finally:
+            cnx.close()
+
+    def delete_notification(self, id):
+        cnx = self.cnxpool.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        try:
+            sql = "DELETE FROM notification WHERE  id = %s "
+            cursor.execute(sql, (id,))
             cnx.commit()
             return True
         except Exception as error:

@@ -31,7 +31,7 @@ class MemberDatabase:
         finally:
             cnx.close()
 
-    def check_memberdata(self, data):
+    def get_user_by_email(self, data):
         email = data.email
         cnx = self.cnxpool.get_connection()
         cursor = cnx.cursor(dictionary=True)
@@ -40,14 +40,15 @@ class MemberDatabase:
             cursor.execute(sql, (email,))
             result = cursor.fetchone()
             if result is None:
-                return True
-            return False
+                return None
+            return result
         except Exception as error:
             print(f"錯誤：{error}")
+            return False
         finally:
             cnx.close()
 
-    def update_memberdata(self, id, email, data):
+    def update_user_data(self, id, email, data):
         name = data.name
         password = self.hash_password(data.password)
         cnx = self.cnxpool.get_connection()
@@ -69,7 +70,7 @@ class MemberDatabase:
         finally:
             cnx.close()
 
-    def get_memberdata(self, data):
+    def get_user_data(self, data):
         email = data.email
         password = self.hash_password(data.password)
         cnx = self.cnxpool.get_connection()
@@ -79,10 +80,11 @@ class MemberDatabase:
             cursor.execute(sql, (email, password,))
             user_data = cursor.fetchone()
             if user_data is None:
-                return False
+                return None
             return user_data
         except Exception as error:
             print(f"錯誤：{error}")
+            return False
         finally:
             cnx.close()
 
@@ -110,6 +112,7 @@ class MemberDatabase:
             return result
         except Exception as error:
             print(f"錯誤：{error}")
+            return False
         finally:
             cnx.close()
 

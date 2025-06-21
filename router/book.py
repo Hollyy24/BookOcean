@@ -4,7 +4,6 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from Model.book_model import DatabaseSystem
 from Model.memeber_Model import MemberDatabase
-import random
 
 
 book_router = APIRouter()
@@ -30,27 +29,26 @@ class BookDetail(BaseModel):
 
 
 @book_router.get("/api/booksdata")
-async def get_book():
+async def get_random_books():
     try:
-        books = search.get_all_books()
-        book_count = len(books)-10
-        number = []
-        for i in range(10):
-            number.append(random.randint(0, book_count))
-        result = [books[i] for i in number]
-        return result
+        result = search.get_all_books()
+        if result is False:
+            return JSONResponse(status_code=500, content={"success": False, "Message": "資料讀取錯誤"})
+        return JSONResponse(status_code=200, content={"success": True, "books": result})
     except Exception as e:
         print("取得所有書籍資料", e)
 
 
 @book_router.post("/api/booksdata")
-async def get_books(book: BookValue):
+async def search_books(book: BookValue):
     search = DatabaseSystem()
     try:
         if book.way == "name":
             result = search.get_data_by_name(book.value, book.page)
         elif book.way == "author":
             result = search.get_data_by_author(book.value, book.page)
+        else:
+            return JSONResponse(status_code=400, content={"success": False, "Message": "查詢方式錯誤"})
         if result is False:
             return JSONResponse(status_code=500, content={"success": False, "Message": "資料讀取錯誤"})
         return JSONResponse(status_code=200, content={"success": True, "books": result})
@@ -60,14 +58,16 @@ async def get_books(book: BookValue):
 
 
 @book_router.post("/api/booksdetail")
-async def get_detaildata(book: BookDetail):
+async def get_book_detail(book: BookDetail):
     search = DatabaseSystem()
     try:
         data = search.get_book_detail(book.source, book.id)
+        if data is False:
+            return JSONResponse(status_code=500, content={"success": False, "Message": "書本資料讀取資料錯誤。"})
         data['source'] = book.source
         price_flow = search.get_price_flow(book.source, book.id)
-        for item in price_flow:
-            item["time"] = item["time"].isoformat() if item['time'] else None
+        if price_flow is False:
+            return JSONResponse(status_code=500, content={"success": False, "Message": "歷史價格讀取資料錯誤。"})
         return JSONResponse(status_code=200, content={"success": True, "data": data, "priceflow": price_flow})
     except Exception as error:
         print(f"取得書本路由錯誤:{error}")
