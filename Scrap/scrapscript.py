@@ -105,6 +105,49 @@ class BooksRequest():
         except Exception as e:
             print(f"博客來取得書本資料發生錯誤：{e}")
 
+    def get_new_books(self):
+        result = []
+        HEADERS = {
+            "User-Agent": random.choice(self.USER_AGENTS),
+            "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "text/html; charset=UTF-8",
+            "Pragma": "no-cache", }
+
+        for i in range(1, 20):
+            random_time = random.randint(5, 20)
+            index = f"{i:02d}"
+            URL = f"https://www.books.com.tw/web/sys_newtopb/books/{index}/"
+            response = requests.get(url=URL, headers=HEADERS)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            book_containers = soup.find_all("li", class_="item")
+            time.sleep(random_time)
+            for i in book_containers:
+                print("-------")
+                try:
+                    book_name = i.find("h4").get_text()
+                    book_url = i.find("a")['href'].split("?")[0]
+                    book_author = i.find(
+                        "ul", class_="msg").find("a").get_text()
+                    book_price = i.find("li", class_="price_a").find_all(
+                        "strong")[1].get_text()
+
+                    book_id = book_url.replace(
+                        "https://www.books.com.tw/products/", "")
+                    temp = {
+                        "source": "books",
+                        "id": book_id,
+                        "name": book_name,
+                        "url": book_url,
+                        "author": book_author,
+                        "price": book_price,
+                    }
+                    result.append(temp)
+                    print(temp)
+                except:
+                    print(Exception)
+                    continue
+        return result
+
 
 class SanminRequest:
 
@@ -181,6 +224,26 @@ class SanminRequest:
                     continue
         return result
 
+    def get_new_books(self):
+        result = []
+        for number in range(1, 12):
+            try:
+                time.sleep(1)
+                WEB_URL = f'https://activity.sanmin.com.tw/promotions/2022/trepapernews/index/A{number}'
+                response = requests.get(WEB_URL)
+                soup = BeautifulSoup(response.text, 'html.parser')
+                books = soup.find_all('td', class_="ProdTd")
+                # print(books)
+                for book in books:
+                    book_id = book.find('div')['name'].replace("Prod_", "")
+                    print(book_id)
+                    temp = self.get_book_data(book_id)
+                    result.append(temp)
+            except Exception as e:
+                print("error:", e)
+                continue
+        return result
+
     def get_book_data(self, id):
         try:
             time.sleep(2)
@@ -251,6 +314,20 @@ class EsliteRequest:
         except Exception as e:
             print(f"誠品抓取資料發生錯誤：{e}")
         return result
+
+    def get_new_books(self):
+        try:
+            url = f'https://athena.eslite.com/api/v1/categories/1674/products?page_no=1&sort_type=date&sort_order=desc&page_size=30&is_available=true'
+            response = requests.get(url)
+            result = []
+            books = response.json()['products']
+            for book in books:
+                book_id = book['guid']
+                result.append(self.get_book_data(book_id))
+                time.sleep(1)
+            return result
+        except Exception as e:
+            print(e)
 
     def get_book_data(self, id):
         try:

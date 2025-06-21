@@ -59,12 +59,11 @@ class DatabaseSystem:
         cursor = cnx.cursor(dictionary=True)
         try:
             sql = """
-                SELECT * FROM allbooks
-                WHERE MATCH(author_fulltext) AGAINST(%s IN BOOLEAN MODE)
-                ORDER BY MATCH(author_fulltext) AGAINST(%s IN BOOLEAN MODE) DESC
+                SELECT * FROM allbooks WHERE author LIKE %s
                 LIMIT 12 OFFSET %s;
             """
-            cursor.execute(sql, (author, author, page,))
+            author = f'%{author}%'
+            cursor.execute(sql, (author, page,))
             result = cursor.fetchall()
             return result
         except Exception as error:

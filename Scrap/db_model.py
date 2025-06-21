@@ -99,23 +99,23 @@ class ScrapDB:
                 sql = """
                 INSERT INTO books (id,name,author,URL,img,price,publisher,publish_date,ISBN,last_updated)
                 VALUES
-                (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 """
             if source == "eslite":
                 sql = """
                 INSERT INTO eslite (id,name,author,URL,img,price,publisher,publish_date,ISBN,last_updated)
                 VALUES
-                (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 """
             if source == "sanmin":
                 sql = """
                 INSERT INTO sanmin (id,name,author,URL,img,price,publisher,publish_date,ISBN,last_updated)
                 VALUES
-                (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 """
             cursor.execute(sql, (data['id'], data['name'], data['author'],
                                  data['url'], data['img'], data['price'],
-                                 data['publisher'], data['publish_date'], data['isbn'], now))
+                                 data['publisher'], data['publish_date'], data['isbn13'], now))
             cnx.commit()
             return True
         except Exception as e:
