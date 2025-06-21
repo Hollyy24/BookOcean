@@ -19,7 +19,6 @@ class Controller {
 
         this.tempToken = this.model.getTempToken();
 
-        this.init();
         this.setupBroadcastChannel();
         this.connectWebSocket();
 
