@@ -17,7 +17,7 @@ class SignupForm(BaseModel):
     password: str
 
 
-class LoginForm(BaseModel):
+class SigninForm(BaseModel):
     email: str
     password: str
 
@@ -44,8 +44,8 @@ async def signup(user: SignupForm):
         return JSONResponse(status_code=500, content={"success": False, "message": str(error)})
 
 
-@member_router.post("/api/user/login")
-async def login(user: LoginForm):
+@member_router.post("/api/user/signin")
+async def login(user: SigninForm):
     try:
         member_data = member.get_user_data(user)
         if member_data is False:

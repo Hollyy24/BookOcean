@@ -4,11 +4,11 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 
 
-from router.member import member_router
-from router.book import book_router
-from router.collect import collect_router
-from router.notification import notification_router
-from router.websocket_router import websocket_router
+from Router.member import member_router
+from Router.book import book_router
+from Router.collect import collect_router
+from Router.notification import notification_router
+from Router.websocket_router import websocket_router
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"))

@@ -71,16 +71,16 @@ class BaseController {
 
         this.view.signupForm.addEventListener("submit", (event) => {
             event.preventDefault()
-            let name = document.querySelector('#log-in-name').value
-            let email = document.querySelector('#log-in-email').value
-            let password = document.querySelector('#log-in-password').value
+            let name = document.querySelector('#sign-up-name').value
+            let email = document.querySelector('#sign-up-email').value
+            let password = document.querySelector('#sign-up-password').value
 
             let user = {
                 "name": name,
                 "email": email,
                 "password": password
             }
-            this.model.userLogin(user)
+            this.model.userSignup(user)
 
         })
         this.view.notificationIcon.addEventListener("click", (element) => {
@@ -197,7 +197,7 @@ class BaseModel {
 
     async userSignin(userData) {
         try {
-            const response = await fetch('/api/user/login', {
+            const response = await fetch('/api/user/signin', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -212,7 +212,7 @@ class BaseModel {
                 return true
             }
             if (result["success"] == false) {
-                alert(result["Message"])
+                alert(result["message"])
                 return false
 
             }
@@ -223,7 +223,7 @@ class BaseModel {
 
     }
 
-    async userLogin(userData) {
+    async userSignup(userData) {
         try {
             const response = await fetch('/api/user/signup', {
                 method: "POST",
@@ -234,10 +234,15 @@ class BaseModel {
             });
             const result = await response.json();
             if (result["success"] == true) {
+                document.querySelector("#sign-up-form").style.display = "none";
+                document.querySelector("#sign-up-name").value = "";
+                document.querySelector("#sign-up-email").value = "";
+                document.querySelector("#sign-up-password").value = "";
+                document.querySelector("#sign-in-form").style.display = "block";
                 alert("註冊成功，請重新登入")
             }
             if (result["success"] == false) {
-                alert(result["Message"])
+                alert(result["message"])
             }
             ;
         } catch (error) {
@@ -287,11 +292,10 @@ class BaseModel {
     updateUIAfterSignin() {
         document.querySelector("#dialog-background").style.display = "none";
         document.querySelector("#sign-in-form").style.display = "none";
-        document.querySelector("#login").style.display = "none";
-        document.querySelector("#signin").style.display = "none";
-        document.querySelector("#member-center").style.display = "flex";
+        document.querySelector("#nav-center").style.display = "none";
+        document.querySelector("#nav-right").style.display = "flex";
 
-        const event = new CustomEvent("loginSuccess", {
+        const event = new CustomEvent("signinSuccess", {
             detail: { reload: "reload" }
         });
         window.dispatchEvent(event);
