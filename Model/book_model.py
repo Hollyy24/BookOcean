@@ -6,7 +6,7 @@ import random
 
 
 class DatabaseSystem:
-    def __init__(self):
+    def __init__(self, cnxpool):
         self.cnxpool = cnxpool
 
     def get_all_books(self):
