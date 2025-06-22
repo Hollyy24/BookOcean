@@ -34,7 +34,7 @@ class Controller {
             return
         }
         this.view.bookCollectButton.addEventListener("click", async () => {
-            this.model.addCollection(this.view.bookCollectButton.id)
+            this.model.addCollection(this.view.bookCollectButton.id, this.view.bookCollectButton.dataset.price)
         }
         )
     }

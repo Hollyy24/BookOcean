@@ -78,10 +78,11 @@ class Controller {
             button.addEventListener("click", async () => {
                 if (button.id == "disabled") { return }
                 const book = button.id;
+                const price = button.dataset.price
                 if (book == "collected") {
                     return
                 }
-                const result = await this.model.addCollection(book);
+                const result = await this.model.addCollection(book, price);
                 if (result == true) {
                     button.textContent = "已收藏";
                     button.style.backgroundColor = "white";

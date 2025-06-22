@@ -22,9 +22,9 @@ class CollectBook(BaseModel):
 
 @collect_router.post("/api/user/collections")
 async def add_book_to_collection(authorization: str = Header(None), data: CollectBook = Body(...)):
+    print(data)
     if not authorization or not authorization.startswith("Bearer "):
         return JSONResponse(status_code=401, content={"success": False, "message": "未提供有效的授權憑證"})
-    token = authorization.split("Bearer ")[1]
     token = authorization.split("Bearer ")[1]
     member_id = member.check_user_status(token)['id']
     result = collection.add_collect_book(member_id, data)
