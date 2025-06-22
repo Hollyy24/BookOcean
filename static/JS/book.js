@@ -91,15 +91,15 @@ class Model {
             return false
         }
     }
-    async addCollection(book) {
+    async addCollection(book, price) {
         const token = localStorage.getItem('token')
         if (!token) {
             alert("請先登入")
             return
         }
         const data = {
-            "token": token,
             "book_source": book.split("/")[0],
+            "book_price": price,
             "book_id": book.split("/")[1]
         }
         try {
@@ -155,6 +155,7 @@ class View {
         this.bookUrl.href = data.URL;
         this.bookUrl.target = "_blank";
         this.bookCollectButton.id = data.source + "/" + data.id
+        this.bookCollectButton.dataset.price = data.price;
 
     }
 

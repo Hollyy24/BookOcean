@@ -131,7 +131,7 @@ class Model {
         }
     }
 
-    async addCollection(book) {
+    async addCollection(book, price) {
         const token = localStorage.getItem('token')
         if (!token) {
             alert("請先登入")
@@ -141,8 +141,8 @@ class Model {
         }
         if (book == "disabled") { return };
         const data = {
-            "token": token,
             "book_source": book.split("/")[0],
+            "book_price": price,
             "book_id": book.split("/")[1]
         }
         try {
@@ -220,6 +220,7 @@ class View {
         url.textContent = "前往購買";
         url.href = data.url;
         collect.id = data.source + "/" + data.id
+        collect.dataset.price = data.price
         collect.textContent = "加入收藏"
 
 

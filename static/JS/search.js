@@ -133,10 +133,11 @@ class Controller {
         document.querySelectorAll(".collect-button").forEach(button => {
             button.addEventListener("click", async () => {
                 const book = button.id;
+                const price = button.dataset.price
                 if (book == "collected") {
                     return
                 }
-                const result = await this.model.addCollection(book);
+                const result = await this.model.addCollection(book, price);
                 if (result == true) {
                     button.textContent = "已收藏";
                     button.style.backgroundColor = "white";
@@ -201,15 +202,15 @@ class Model {
         }
     }
 
-    async addCollection(book) {
+    async addCollection(book, price) {
         const token = localStorage.getItem('token')
         if (!token) {
             alert("請先登入")
             return
         }
         const data = {
-            "token": token,
             "book_source": book.split("/")[0],
+            "book_price": price,
             "book_id": book.split("/")[1]
         }
         try {
@@ -318,6 +319,7 @@ class View {
         bookUrl.href = data.url;
         collectButton.textContent = "加入收藏";
         collectButton.id = `${data.source}/${data.id}`;
+        collectButton.dataset.price = data.price;
 
         urlContainer.appendChild(bookUrl);
         urlContainer.appendChild(collectButton)

@@ -15,14 +15,16 @@ class CollectionDatabase:
             time = datetime.now(taiwan_tz).strftime("%Y-%m-%d")
             member_id = user_id
             book_id = data.book_id
+            book_price = data.book_price
             if data.book_source == "eslite":
                 book_source = "eslite"
             elif data.book_source == "books":
                 book_source = 'books'
             if data.book_source == "sanmin":
                 book_source = 'sanmin'
-            sql = "INSERT INTO collection (member_id,book_id,book_source,time) VALUES (%s,%s,%s,%s)"
-            cursor.execute(sql, (member_id, book_id, book_source, time,))
+            sql = "INSERT INTO collection (member_id,book_id,book_source,price,time) VALUES (%s,%s,%s,%s,%s)"
+            cursor.execute(
+                sql, (member_id, book_id, book_source, book_price, time,))
             cnx.commit()
             return True
         except Exception as error:
