@@ -44,6 +44,7 @@ DEMO website : https://interestingthing4all.fit
 ### Deployment & Infrastructure
 - Docker
 - GitHub
+  - Git Action Deploy   
 - AWS
   - EC2
   - S3
