@@ -32,6 +32,7 @@ class BookDetail(BaseModel):
 async def get_random_books():
     try:
         result = search.get_all_books()
+        print(result)
         if result is False:
             return JSONResponse(status_code=500, content={"success": False, "Message": "資料讀取錯誤"})
         return JSONResponse(status_code=200, content={"success": True, "books": result})
