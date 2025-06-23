@@ -1,0 +1,38 @@
+name: Deploy Website to EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-website:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Create .env file
+        run: |
+          echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env
+          echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
+          echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+          echo "MY_SECRET_KEY=${{ secrets.MY_SECRET_KEY}}" >> .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY }}" >> .env
+          echo "AWS_SCRECT_KEY=${{ secrets.AWS_SCRECT_KEY }}" >> .env
+          echo "REGION=${{ secrets.REGION }}" >> .env
+          echo "MY_BUCKET_NAME=${{ secrets.MY_BUCKET_NAMED }}" >> .env
+          echo "Generated .env file successfully!"
+          
+      - name: Stop and remove existing container
+        run: |
+          docker stop mywebsite || true
+          docker rm mywebsite || true
+
+      - name: Build Docker image
+        run: docker build -t bookocean:latest .
+
+      - name: Run new container
+        run: docker run -d --env-file .env -p 8000:8000 --name mywebsite --restart always bookocean:latest
+
+      - name: Clean up old images
+        run: docker image prune -af
