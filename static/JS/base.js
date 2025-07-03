@@ -115,12 +115,16 @@ class BaseController {
 
     }
     async init() {
+
         const result = await this.model.checkStatus()
         if (result == false) {
             this.view.navRight.style.display = "none";
             this.view.navCenter.style.display = "flex"
+            this.view.signinEmail.value = "test@test.com";
+            this.view.signinPassword.value = "testtest";
             return
         }
+
         this.view.navRight.style.display = "flex";
         this.view.navCenter.style.display = "none"
 
@@ -325,6 +329,10 @@ class BaseView {
 
         this.signupForm = document.querySelector("#sign-up-form");
         this.siginForm = document.querySelector("#sign-in-form");
+
+        this.signinEmail = document.querySelector("#sign-in-email");
+        this.signinPassword = document.querySelector("#sign-in-password");
+
         this.dialogBackground = document.querySelector('#dialog-background');
 
         this.changeSignin = document.querySelector("#change-signin");
