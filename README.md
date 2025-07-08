@@ -24,6 +24,7 @@ DEMO website : https://interestingthing4all.fit
 
 ## ERD
 
+
 ![ERD ](./docs/ERD.png)
 
 
@@ -52,7 +53,12 @@ DEMO website : https://interestingthing4all.fit
   - RDS (MySQL)
 - Nginx
 
+## Contact
 
+洪瑩縈 HollyHung 
+
+
+EMAIL: jk699411@gmail.com
 
 ## Disclaimer
 This project is for educational and demonstrational purposes only and is not intended for commercial use. All data crawled belongs to the original websites. Users should comply with the terms of service of the respective websites. The author is not responsible for any legal issues arising from improper use.
