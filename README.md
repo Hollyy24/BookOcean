@@ -13,10 +13,17 @@ DEMO website : https://interestingthing4all.fit
 
 ## Preview ##
 
-<img src='./docs/homepage.png'  width=200>
-<img src='./docs/searchpage.png' width=200>
-<img src='./docs/bookpage.png' width=200>
-<img src='./docs/memberpage.png' width=200>
+### Home page ###
+<img src='./docs/homepage.png'  width=400>
+
+### Search result page ###
+<img src='./docs/searchpage.png' width=400>
+
+### Bookdata page ###
+<img src='./docs/bookpage.png' width=400>
+
+### Member page ###
+<img src='./docs/memberpage.png' width=400>
 
 ## Features
 
