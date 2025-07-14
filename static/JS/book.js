@@ -56,7 +56,7 @@ class Model {
     async fetchBookData() {
         const parameter = this.getQueryparameter()
         try {
-            const response = await fetch('/api/booksdetail', {
+            const response = await fetch(`/api/booksdetail?source=${parameter.source}&id=${parameter.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

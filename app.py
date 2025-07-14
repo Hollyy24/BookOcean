@@ -24,7 +24,7 @@ async def index(request: Request):
     return FileResponse("static/index.html", media_type="text/html")
 
 
-@app.get("/search/", include_in_schema=False)
+@app.get("/search", include_in_schema=False)
 async def index(request: Request, way: str, value: str):
     return FileResponse("static/search.html", media_type="text/html")
 

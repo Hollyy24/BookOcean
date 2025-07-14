@@ -12,22 +12,6 @@ search = DatabaseSystem()
 member = MemberDatabase()
 
 
-class CollectBook(BaseModel):
-    book_source: str
-    book_id: str
-
-
-class BookValue(BaseModel):
-    way: str
-    value: str
-    page: int
-
-
-class BookDetail(BaseModel):
-    source: str
-    id: str
-
-
 @book_router.get("/api/renderbooks")
 async def get_random_books():
     try:
@@ -39,14 +23,14 @@ async def get_random_books():
         print("取得所有書籍資料", e)
 
 
-@book_router.post("/api/books")
-async def search_books(book: BookValue):
+@book_router.get("/api/books")
+async def search_books(way: str, value: str, page: int):
     search = DatabaseSystem()
     try:
-        if book.way == "name":
-            result = search.get_data_by_name(book.value, book.page)
-        elif book.way == "author":
-            result = search.get_data_by_author(book.value, book.page)
+        if way == "name":
+            result = search.get_data_by_name(value, page)
+        elif way == "author":
+            result = search.get_data_by_author(value, page)
         else:
             return JSONResponse(status_code=400, content={"success": False, "Message": "查詢方式錯誤"})
         if result is False:
@@ -57,15 +41,15 @@ async def search_books(book: BookValue):
         return JSONResponse(status_code=500, content={"success": False, "Message": error})
 
 
-@book_router.post("/api/booksdetail")
-async def get_book_detail(book: BookDetail):
+@book_router.get("/api/booksdetail")
+async def get_book_detail(source: str, id: str):
     search = DatabaseSystem()
     try:
-        data = search.get_book_detail(book.source, book.id)
+        data = search.get_book_detail(source, id)
         if data is False:
             return JSONResponse(status_code=500, content={"success": False, "Message": "書本資料讀取資料錯誤。"})
-        data['source'] = book.source
-        price_flow = search.get_price_flow(book.source, book.id)
+        data['source'] = source
+        price_flow = search.get_price_flow(source, id)
         if price_flow is False:
             return JSONResponse(status_code=500, content={"success": False, "Message": "歷史價格讀取資料錯誤。"})
         return JSONResponse(status_code=200, content={"success": True, "data": data, "priceflow": price_flow})

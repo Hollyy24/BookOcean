@@ -41,7 +41,7 @@ class Controller {
             const searchWay = this.view.searchWay.value
             const searchValue = this.view.searchInput.value.trim()
             if (searchValue) {
-                window.location.href = `/search/?way=${searchWay}&value=${searchValue}`;
+                window.location.href = `/search?way=${searchWay}&value=${searchValue}`;
             } else {
                 alert("請輸入關鍵字");
             }

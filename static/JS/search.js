@@ -169,12 +169,11 @@ class Model {
             "page": page
         }
         try {
-            const response = await fetch('/api/booksdata', {
-                method: "POST",
+            const response = await fetch(`/api/books?way=${search_data.way}&value=${search_data.value}&page=${search_data.page}`, {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(search_data)
             });
             const data = await response.json();
             return data;
