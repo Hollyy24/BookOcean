@@ -57,11 +57,10 @@ class Model {
         const parameter = this.getQueryparameter()
         try {
             const response = await fetch('/api/booksdetail', {
-                method: "POST",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(parameter)
             });
             const data = await response.json();
             return data;

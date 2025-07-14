@@ -28,7 +28,7 @@ class BookDetail(BaseModel):
     id: str
 
 
-@book_router.get("/api/booksdata")
+@book_router.get("/api/renderbooks")
 async def get_random_books():
     try:
         result = search.get_all_books()
@@ -39,7 +39,7 @@ async def get_random_books():
         print("取得所有書籍資料", e)
 
 
-@book_router.post("/api/booksdata")
+@book_router.post("/api/books")
 async def search_books(book: BookValue):
     search = DatabaseSystem()
     try:

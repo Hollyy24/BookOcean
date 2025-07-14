@@ -101,7 +101,7 @@ class Controller {
 class Model {
     async fetchRandomBook() {
         try {
-            const response = await fetch('/api/booksdata', {
+            const response = await fetch('/api/renderbooks', {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
