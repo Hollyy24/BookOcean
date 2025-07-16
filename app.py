@@ -1,4 +1,5 @@
 from fastapi import *
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
@@ -11,6 +12,20 @@ from router.notification import notification_router
 from router.websocket_router import websocket_router
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "https://localhost"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.mount("/static", StaticFiles(directory="static"))
 app.include_router(member_router)
 app.include_router(book_router)
