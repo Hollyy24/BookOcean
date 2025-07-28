@@ -3,7 +3,7 @@
 
 Welcome to **BookOcean** 
 
-a website that helps you find  the prices of books from different book shops!
+A website that helps you find  the prices of books from different book shops!
 
 This project automatically crawls book data from online bookstores and helps users track book prices and get notified when prices change.
 
@@ -28,7 +28,7 @@ DEMO website : https://interestingthing4all.fit
 ## Features
 
 - Independently developed a **full-stack web application**, managing the entire development lifecycle from ideation to cloud deployment.
-- Implement a book search feature using **MySQL's** built-in **Full-Text Search** functionality. This involves creating a FU LLTEXT index on
+- Implement a book search feature using **MySQL's** built-in **Full-Text Search** functionality. This involves creating a FULLTEXT index on
 - Develop frequency auto crawling mechanism and cache the data on backend SQL server deployed in **AWS S3** and **CloudFront**.
 - Designed and built **RESTful APIs** using FastAPI, and generated clear documentation for the frontend.
 - Utilized **Python (FastAPI)** for backend logic and **JavaScript**,**HTML**, and **CSS** for the interactive frontend.
