@@ -258,7 +258,7 @@ class BaseModel {
         const token = localStorage.getItem('token')
         if (!token) { return false }
         try {
-            const response = await fetch('/api/notification', {
+            const response = await fetch('/api/notifications', {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,

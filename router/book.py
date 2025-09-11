@@ -41,7 +41,7 @@ async def search_books(way: str, value: str, page: int):
         return JSONResponse(status_code=500, content={"success": False, "Message": error})
 
 
-@book_router.get("/api/booksdetail")
+@book_router.get("/api/book/{source}/{id}")
 async def get_book_detail(source: str, id: str):
     search = DatabaseSystem()
     try:

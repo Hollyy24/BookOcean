@@ -33,7 +33,7 @@ async def get_user_collected_books(authorization: str = Header(None)):
     return JSONResponse(status_code=200, content={"success": True, "data": data})
 
 
-@collect_router.post("/api/user/collections")
+@collect_router.post("/api/user/collection")
 async def add_book_to_collection(authorization: str = Header(None), data: CollectBook = Body(...)):
     print(data)
     if not authorization or not authorization.startswith("Bearer "):

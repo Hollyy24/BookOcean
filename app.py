@@ -14,8 +14,8 @@ from router.websocket_router import websocket_router
 app = FastAPI()
 
 origins = [
-    "http://localhost",
-    "https://localhost"
+    "http://localhost:8000",
+    "https://localhost:8000"
 ]
 
 app.add_middleware(

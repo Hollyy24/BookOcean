@@ -10,7 +10,7 @@ member = MemberDatabase()
 notification_router = APIRouter()
 
 
-@notification_router.get("/api/notification")
+@notification_router.get("/api/notifications")
 async def notify(authorization: str = Header(None)):
     token = authorization.split("Bearer ")[1]
     id = member.check_user_status(token)['id']

@@ -56,7 +56,7 @@ class Model {
     async fetchBookData() {
         const parameter = this.getQueryparameter()
         try {
-            const response = await fetch(`/api/booksdetail?source=${parameter.source}&id=${parameter.id}`, {
+            const response = await fetch(`/api/book/${parameter.source}/${parameter.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -102,7 +102,7 @@ class Model {
             "book_id": book.split("/")[1]
         }
         try {
-            const response = await fetch('/api/user/collections', {
+            const response = await fetch('/api/user/collection', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
